@@ -58,4 +58,10 @@
   <ItemGroup>
     <Folder Include="Properties" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="Expense.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="ExpensePoint.Database.refactorlog" />
+  </ItemGroup>
 </Project>
