@@ -1,7 +1,7 @@
 ExpensePoint
 ============
 
-ExpensePoint is an open-source SharePoint project to streamline an expense reimbursement process supporting bulk records upload, business workflows and enterprise system integration.
+ExpensePoint is an open-source project to streamline an expense reimbursement process supporting bulk records upload, business workflows and enterprise system integration.
 
 
 **Links to...**
