@@ -17,7 +17,20 @@ describe('Controller: MainCtrl', function () {
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(MainCtrl.awesomeThings.length).toBe(3);
+  it('should have no items to start', function () {
+    expect(scope.assets.length).toBe(0);
+  });
+  
+  it('should add items to the list', function(){
+      scope.todo = 'Test 1';
+      scope.addAsset();
+      expect(scope.assets.length).toBe(1);
+  });
+  
+  it('should add then remove an item from the list', function(){
+     scope.todo = 'Test 1';
+     scope.addAsset();
+     scope.removeAsset(0);
+     expect(scope.assets.length).toBe(0); 
   });
 });
