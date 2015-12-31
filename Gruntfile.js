@@ -33,6 +33,10 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
+      ts: {
+        files: ['<%= yeoman.app %>/scripts/{,*/}*.ts'],
+        tasks: ['newer:ts:all']
+      },
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
@@ -118,6 +122,21 @@ module.exports = function (grunt) {
       }
     },
 
+    // TypeScript config
+    ts: {
+      options: {                  // use to override the default options, http://gruntjs.com/configuring-tasks#options
+        target: 'es3',            // es3 (default) / or es5
+        module: 'commonjs',       // amd , commonjs (default)
+        sourcemap: true,          // true  (default) | false
+        declaration: false,       // true | false  (default)
+        nolib: false,             // true | false (default)
+        comments: false           // true | false (default)
+      },
+      all: {
+          src: ['<%= yeoman.app %>/scripts/{,*/}*.ts']
+      }
+    },
+    
     // Make sure there are no obvious mistakes
     jshint: {
       options: {
