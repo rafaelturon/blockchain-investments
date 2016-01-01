@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - 'stable'
-before_install:
+before_script:
   - npm install -g grunt-cli bower
   - bower install
-before_script: grunt test
+script: grunt test
