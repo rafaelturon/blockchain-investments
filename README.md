@@ -1,4 +1,4 @@
-ExpensePoint
+ExpensePoint [![Build Status](https://travis-ci.org/rafaelturon/ExpensePoint.svg?branch=master)](https://travis-ci.org/rafaelturon/ExpensePoint)
 ============
 
 ExpensePoint is an open-source project to streamline an expense reimbursement process supporting bulk records upload, business workflows and enterprise system integration.
