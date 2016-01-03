@@ -26,6 +26,10 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main'
       })
+      .when('/asset',{
+        templateUrl: 'views/asset.html',
+        controller: 'AssetCtrl'
+      })
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl',
