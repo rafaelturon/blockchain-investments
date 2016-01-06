@@ -7,10 +7,29 @@
  * # AssetCtrl
  * Controller of the expensePointApp
  */
-angular.module('expensePointApp').controller('AssetCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+angular.module('expensePointApp').controller('AssetCtrl', function ($scope, localStorageService) {
+  var assetsInStore = localStorageService.get('assets');
+  $scope.assets = assetsInStore || [];
+  
+  $scope.assets = [
+    {
+      'name': 'Gold',
+      'value': 1564.50,
+      'date': '2013-04-23T18:25:43.511Z',
+      'percentage': 34
+    },
+    {
+      'name': 'Silver',
+      'value': 3564.50,
+      'date': '2014-04-23T18:25:43.511Z',
+      'percentage': 41
+    },
+    {
+      'name': 'Bitcon',
+      'value': 2564.50,
+      'date': '2012-04-23T18:25:43.511Z',
+      'percentage': 25
+    }
+  ];
+  
+});
