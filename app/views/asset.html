@@ -1,13 +1,24 @@
 <div class="page-header">
-    <h1>Assets</h1>      
+    <h1>Assets <small>your asset portfolio</small></h1>      
 </div>
 <input class="form-control" type="text" ng-model="searchTerm" placeholder="Search term"/>
-<div class="lit-group" ng-model="assets">
-	<div class="list-group" ng-repeat="asset in assets | filter:searchTerm">
-		<a href="" class="list-group-item">
-		<h4 class="list-group-item-heading">{{asset.name}} - {{asset.percentage | number}}%</h4>
-		<p class="list-group-item-text">{{asset.value | currency}} - {{asset.date | date:'dd/MM/yyyy'}}</p>
+<div class="card-deck-wrapper">
+  <div class="card-deck" ng-model="assets">
+    <div class="card" ng-repeat="asset in assets | filter:searchTerm">
+      <img class="card-img-top" src="http://lorempixel.com/242/200/technics/" alt="Card image cap">
+      <div class="card-block">
+        <h4 class="card-title">{{asset.name}} - {{asset.percentage | number}}%</h4>
+        <p class="card-text"><small class="text-muted">Last updated {{asset.date | date:'dd/MM/yyyy'}}</small></p>
+      </div>
+	  	<ul class="list-group list-group-flush">
+			<li class="list-group-item">{{asset.value | currency}}</li>
+			<li class="list-group-item">Dapibus ac facilisis in</li>
+			<li class="list-group-item">Vestibulum at eros</li>
+		</ul>
+	<div class="card-block">
 	</div>
+		<a href="#" class="card-link">Edit Asset</a>
+    </div>
+  </div>
 </div>
 <a class="btn btn-primary btn-block" href="#/newAssset">New Asset</a>
-<button class="btn btn-danger btn-block" ng-click="deleteAssets(assets)" ng-if="isAssetSelected(assets)">Delete Assets</button>
