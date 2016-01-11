@@ -410,6 +410,7 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             '*.html',
+            'server.js',
             'images/{,*/}*.{webp}',
             'styles/fonts/{,*/}*.*'
           ]
@@ -503,8 +504,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin',
-    'buildcontrol'
+    'htmlmin'
+    //'buildcontrol'
   ]);
 
   grunt.registerTask('default', [
