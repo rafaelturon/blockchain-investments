@@ -361,8 +361,7 @@ module.exports = function (grunt) {
                 dir: 'dist',
                 commit: true,
                 push: true,
-                message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%',
-                remote: 'git@heroku.com:murmuring-falls-6617.git'
+                message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
             }
         }
     },
