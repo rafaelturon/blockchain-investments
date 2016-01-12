@@ -1,4 +1,4 @@
-ExpensePoint [![Build Status](https://travis-ci.org/rafaelturon/ExpensePoint.svg?branch=master)](https://travis-ci.org/rafaelturon/ExpensePoint) [![Code Climate](https://codeclimate.com/github/rafaelturon/expense-point/badges/gpa.svg)](https://codeclimate.com/github/rafaelturon/expense-point) [![Test Coverage](https://codeclimate.com/github/rafaelturon/expense-point/badges/coverage.svg)](https://codeclimate.com/github/rafaelturon/expense-point/coverage)
+ExpensePoint [![Build Status](https://travis-ci.org/rafaelturon/expense-point.svg?branch=master)](https://travis-ci.org/rafaelturon/ExpensePoint) [![Code Climate](https://codeclimate.com/github/rafaelturon/expense-point/badges/gpa.svg)](https://codeclimate.com/github/rafaelturon/expense-point) [![Test Coverage](https://codeclimate.com/github/rafaelturon/expense-point/badges/coverage.svg)](https://codeclimate.com/github/rafaelturon/expense-point/coverage)
 ============
 
 ExpensePoint is an open-source project to support your expense management helping to achieve your financial goals.
