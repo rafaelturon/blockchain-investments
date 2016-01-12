@@ -5,6 +5,8 @@ before_script:
   - npm install -g grunt-cli bower
   - bower install
 script: grunt test
+after_script:
+  - codeclimate-test-reporter < .tmp/coverage/report/lcov.info
 addons:
     code_climate:
         repo_token: e9fd5618656d0658d9accd3ac510ca19136c46fcdc3e811388d8c8a4afe1dde1
