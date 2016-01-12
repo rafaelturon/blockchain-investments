@@ -2,6 +2,7 @@ ExpensePoint [![Build Status](https://travis-ci.org/rafaelturon/expense-point.sv
 ============
 
 ExpensePoint is an open-source project to support your expense management helping to achieve your financial goals.
+
 **Live Demo**
 - [Heroku Demo App] (http://expense-point.herokuapp.com/)
 
