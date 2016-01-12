@@ -1,11 +1,7 @@
-ExpensePoint [![Build Status](https://travis-ci.org/rafaelturon/ExpensePoint.svg?branch=master)](https://travis-ci.org/rafaelturon/ExpensePoint)
+ExpensePoint [![Build Status](https://travis-ci.org/rafaelturon/ExpensePoint.svg?branch=master)](https://travis-ci.org/rafaelturon/ExpensePoint) [![Code Climate](https://codeclimate.com/github/rafaelturon/expense-point/badges/gpa.svg)](https://codeclimate.com/github/rafaelturon/expense-point) [![Test Coverage](https://codeclimate.com/github/rafaelturon/expense-point/badges/coverage.svg)](https://codeclimate.com/github/rafaelturon/expense-point/coverage)
 ============
 
-ExpensePoint is an open-source project to streamline an expense reimbursement process supporting bulk records upload, business workflows and enterprise system integration.
-
-
-**Links to...**
-- [Architecture Documentation] (https://onedrive.live.com/redir?resid=457683783DC2EE4!23736&authkey=!AAhiwFxjiL5BqA0&ithint=folder%2cpptx)
+ExpensePoint is an open-source project to support your expense management helping to achieve your financial goals.
 
 # expense-point
 
