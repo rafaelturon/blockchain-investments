@@ -36,7 +36,7 @@ module.exports = function(config) {
       'bower_components/angular-local-storage/dist/angular-local-storage.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
-      "app/scripts/**/*.js",
+      "client/scripts/**/*.js",
       "test/mock/**/*.js",
       "test/spec/**/*.js"
     ],
@@ -67,7 +67,7 @@ module.exports = function(config) {
       // source files, that you wanna generate coverage for
       // do not include tests or libraries
       // (these files will be instrumented by Istanbul)
-      'app/**/*.js': ['coverage']
+      'client/**/*.js': ['coverage']
     },
     
     // optionally, configure the reporter
