@@ -17,13 +17,14 @@ module.exports = function (grunt) {
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
     cdnify: 'grunt-google-cdn',
-    buildcontrol: 'grunt-build-control'
+    buildcontrol: 'grunt-build-control',
+    nodemon: 'grunt-nodemon',
   });
 
   // Configurable paths for the application
   var appConfig = {
     client: require('./bower.json').appPath || 'client',
-    dist: 'dist'
+    dist: 'server/dist'
   };
 
   // Define the configuration for all the tasks
@@ -240,7 +241,23 @@ module.exports = function (grunt) {
             }
           }
       }
-    }, 
+    },
+    
+    // Debugging with node inspector
+    'node-inspector': {
+      custom: {
+        options: {
+          'web-host': 'localhost'
+        }
+      }
+    },
+    
+    // Use nodemon to run server in debug mode with an initial breakpoint
+    nodemon: {
+      reload: {
+        script: 'server/app.js'
+      }
+    },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -358,10 +375,17 @@ module.exports = function (grunt) {
     buildcontrol: {
         dist: {
             options: {
-                dir: 'dist',
+                dir: 'server',
                 commit: true,
                 push: true,
+                connectCommits: false,
                 message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+            },
+            heroku: {
+              options: {
+                remote: 'heroku',
+                branch: 'master'
+              }
             }
         }
     },
@@ -442,6 +466,15 @@ module.exports = function (grunt) {
       test: [
         'copy:styles'
       ],
+      reload: {
+        tasks: [
+          'nodemon',
+          'watch'
+        ],
+        options: {
+          logConcurrentOutput: true
+        }
+      },
       dist: [
         'copy:styles',
         'imagemin',
@@ -463,7 +496,18 @@ module.exports = function (grunt) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
-
+    
+    if (target === 'reload') {
+      return grunt.task.run([
+        'clean:server',
+        'wiredep',
+        'concurrent:server',
+        'postcss:server',
+        'connect:livereload',
+        'concurrent:reload'
+      ]);
+    }
+    
     grunt.task.run([
       'clean:server',
       'wiredep',

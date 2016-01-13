@@ -24,7 +24,7 @@ mongoose.connect(process.env.MONGOLAB_URI, function (error) {
 
 // STATIC VERSION
 // ==============
-app.use(serveStatic('dist', {'index': ['index.html', 'default.htm']}));
+app.use(serveStatic('server/dist', {'index': ['index.html', 'default.htm']}));
 
 // ROUTES FOR API
 // ==============
@@ -43,3 +43,5 @@ app.use('/api', router);
 app.listen(port, function() {
     console.log('Our app is running on http://localhost:' + port);
 });
+
+module.exports = app;
