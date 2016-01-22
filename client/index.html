@@ -39,10 +39,10 @@
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
             <ul class="nav navbar-nav">
-              <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
-              <li ng-class="{ active: isActive('/asset')}"><a href="#/asset">Asset</a></li>
-              <li ng-class="{ active: isActive('/')}"><a href="#/">Contact</a></li>
-              <li ng-class="{ active: isActive('/about')}"><a href="#/about">About</a></li>
+              <li ng-class="{ active: isActive('/')}"><a href="#/">{{ 'HOME' | translate }}</a></li>
+              <li ng-class="{ active: isActive('/asset')}"><a href="#/asset">{{ 'ASSET' | translate }}</a></li>
+              <li ng-class="{ active: isActive('/')}"><a href="#/">{{ 'CONTACT' | translate }}</a></li>
+              <li ng-class="{ active: isActive('/about')}"><a href="#/about">{{ 'ABOUT' | translate }}</a></li>
             </ul>
           </div>
         </div>
@@ -85,6 +85,7 @@
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
     <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

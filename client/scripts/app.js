@@ -17,6 +17,7 @@ angular
     'ngSanitize',
     'ngTouch',
     'ui.sortable',
+    'pascalprecht.translate',
     'LocalStorageModule'
   ])
   .config(function ($routeProvider) {
@@ -38,4 +39,20 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
+  .config(['$translateProvider', function($translateProvider) {
+    $translateProvider.translations('en', {
+      'HOME': 'Home',
+      'ASSET': 'Asset',
+      'CONTACT': 'Contact',
+      'ABOUT': 'About'
+    });
+    $translateProvider.translations('pt', {
+      'HOME': 'Início',
+      'ASSET': 'Ativos',
+      'CONTACT': 'Contatos',
+      'ABOUT': 'Sobre'
+    });
+ 
+    $translateProvider.preferredLanguage('pt');
+  }]);
