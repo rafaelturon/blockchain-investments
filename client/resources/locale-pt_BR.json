@@ -1,0 +1,8 @@
+{
+	"views.index.Home": "Início",
+	"views.index.Asset": "Ativos",
+	"views.index.Contact": "Contato",
+	"views.index.About": "Sobre",
+	
+	"directives.language-select.Language": "Idioma"
+}

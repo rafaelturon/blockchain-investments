@@ -18,8 +18,18 @@ angular
     'ngTouch',
     'ui.sortable',
     'pascalprecht.translate',
-    'LocalStorageModule'
+    'LocalStorageModule',
+    'tmh.dynamicLocale'
   ])
+  .constant('DEBUG_MODE', /*DEBUG_MODE*/true/*DEBUG_MODE*/)
+  .constant('VERSION_TAG', /*VERSION_TAG_START*/new Date().getTime()/*VERSION_TAG_END*/)
+  .constant('LOCALES', {
+    'locales': {
+      'pt_BR': 'Português',
+      'en_US': 'English'
+    },
+    'preferredLocale': 'en_US'
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -40,19 +50,34 @@ angular
         redirectTo: '/'
       });
   })
-  .config(['$translateProvider', function($translateProvider) {
-    $translateProvider.translations('en', {
-      'HOME': 'Home',
-      'ASSET': 'Asset',
-      'CONTACT': 'Contact',
-      'ABOUT': 'About'
+  // Angular debug info
+  .config(function ($compileProvider, DEBUG_MODE) {
+    if (!DEBUG_MODE) {
+      $compileProvider.debugInfoEnabled(false);// disables AngularJS debug info
+    }
+  })
+  // Angular debug info
+  .config(function ($compileProvider, DEBUG_MODE) {
+    if (!DEBUG_MODE) {
+      $compileProvider.debugInfoEnabled(false);// disables AngularJS debug info
+    }
+  })
+  // Angular Translate
+  .config(function ($translateProvider, DEBUG_MODE, LOCALES) {
+    if (DEBUG_MODE) {
+      $translateProvider.useMissingTranslationHandlerLog();// warns about missing translates
+    }
+
+    $translateProvider.useStaticFilesLoader({
+      prefix: 'resources/locale-',
+      suffix: '.json'
     });
-    $translateProvider.translations('pt', {
-      'HOME': 'Início',
-      'ASSET': 'Ativos',
-      'CONTACT': 'Contatos',
-      'ABOUT': 'Sobre'
-    });
- 
-    $translateProvider.preferredLanguage('pt');
-  }]);
+
+    $translateProvider.preferredLanguage(LOCALES.preferredLocale);
+    $translateProvider.useLocalStorage();
+    $translateProvider.useSanitizeValueStrategy('escape');
+  })
+  // Angular Dynamic Locale
+  .config(function (tmhDynamicLocaleProvider) {
+    tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
+  });

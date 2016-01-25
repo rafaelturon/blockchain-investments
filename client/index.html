@@ -23,7 +23,11 @@
     <!-- Add your site or application content here -->
     <div class="header" ng-controller="HeaderCtrl">
       <div class="navbar navbar-default" role="navigation">
-        <div class="container">
+        <div class="container clearfix">
+          
+          <div class="pull-right">
+            <div ng-translate-language-select></div>
+          </div>
           <div class="navbar-header">
 
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
@@ -39,10 +43,10 @@
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
             <ul class="nav navbar-nav">
-              <li ng-class="{ active: isActive('/')}"><a href="#/">{{ 'HOME' | translate }}</a></li>
-              <li ng-class="{ active: isActive('/asset')}"><a href="#/asset">{{ 'ASSET' | translate }}</a></li>
-              <li ng-class="{ active: isActive('/')}"><a href="#/">{{ 'CONTACT' | translate }}</a></li>
-              <li ng-class="{ active: isActive('/about')}"><a href="#/about">{{ 'ABOUT' | translate }}</a></li>
+              <li ng-class="{ active: isActive('/')}"><a href="#/">{{ 'views.index.Home' | translate }}</a></li>
+              <li ng-class="{ active: isActive('/asset')}"><a href="#/asset">{{ 'views.index.Asset' | translate }}</a></li>
+              <li ng-class="{ active: isActive('/')}"><a href="#/">{{ 'views.index.Contact' | translate }}</a></li>
+              <li ng-class="{ active: isActive('/about')}"><a href="#/about">{{ 'views.index.About' | translate }}</a></li>
             </ul>
           </div>
         </div>
@@ -86,6 +90,11 @@
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
     <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
     <script src="bower_components/angular-translate/angular-translate.js"></script>
+    <script src="bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
+    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+    <script src="bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
+    <script src="bower_components/angular-translate-handler-log/angular-translate-handler-log.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -95,6 +104,8 @@
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/asset.js"></script>
+        <script src="scripts/services/locale.js"></script>
+        <script src="scripts/directives/language-select.js"></script>
         <!-- endbuild -->
 </body>
 </html>

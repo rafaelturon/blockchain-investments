@@ -72,6 +72,18 @@ body {
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
+  .navbar-nav {
+    float: left;
+    margin: 0px;
+  }
+  .language-select{
+    line-height:34px;
+    margin-top:8px;
+  }
+  .language-select select{
+    -webkit-appearance:menulist-button;
+    height:34px;
+   }
   .container {
     max-width: 730px;
   }
