@@ -56,4 +56,13 @@ angular.module('expensePointApp').controller('AssetCtrl', function ($scope, loca
     }
   ];
   
+  $scope.addAsset = function() {
+      $scope.assets.push($scope.asset);
+      $scope.asset = '';  
+  };
+  
+  $scope.removeAsset = function(index) {
+    $scope.assets.splice(index, 1);  
+  };
+  
 });

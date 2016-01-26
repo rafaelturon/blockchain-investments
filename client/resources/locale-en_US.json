@@ -1,8 +1,16 @@
 {
-	"views.index.Home": "Home",
-	"views.index.Asset": "Asset",
-	"views.index.Contact": "Contact",
-	"views.index.About": "About",
+	"views.index.home": "Home",
+	"views.index.asset": "Asset",
+	"views.index.about": "About",
+	
+	"views.asset.title": "Assets",
+	"views.asset.description": "Your asset portfolio",
+	"views.asset.last-update": "Last updated",
+	"views.asset.new-asset": "New Asset",
+	"views.asset.edit-asset": "Edit Asset",
+	"views.asset.add-asset": "Add Asset",
+	"views.asset.search-placeholder": "Search term",
+	"views.asset.asset-placeholder": "Add your asset",
 	
 	"directives.language-select.Language": "Language"
 }

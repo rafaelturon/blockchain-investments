@@ -1,8 +1,16 @@
 {
-	"views.index.Home": "Início",
-	"views.index.Asset": "Ativos",
-	"views.index.Contact": "Contato",
-	"views.index.About": "Sobre",
+	"views.index.home": "Início",
+	"views.index.asset": "Ativos",
+	"views.index.about": "Sobre",
+	
+	"views.asset.title": "Ativos",
+	"views.asset.description": "seu portfólio de ativos",
+	"views.asset.last-update": "Atualizado em",
+	"views.asset.new-asset": "Novo Ativo",
+	"views.asset.edit-asset": "Editar Ativo",
+	"views.asset.add-asset": "Adicionar Ativo",
+	"views.asset.search-placeholder": "Termo de busca",
+	"views.asset.asset-placeholder": "Adicionar ativo",
 	
 	"directives.language-select.Language": "Idioma"
 }
