@@ -25,4 +25,4 @@ Running `grunt serve:dist` will run the deployment steps.
 
 # blockchain-investments :: server
 
-A Node service with a restful API using Express routes. Persistance layer using MongoDB.
+A ASPNET Core backend with a restful API using Kestrel Web API Controllers. Persistance layer using MongoDB.
