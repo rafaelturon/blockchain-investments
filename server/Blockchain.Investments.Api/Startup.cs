@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace InvestmentsApi
+namespace Blockchain.Investments.Api
 {
     public class Startup
     {

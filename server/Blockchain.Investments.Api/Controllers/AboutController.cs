@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InvestmentsApi.Controllers
+namespace Blockchain.Investments.Api.Controllers
 {
     [Route("api/[controller]")]
     public class AboutController : Controller
