@@ -16,9 +16,9 @@ namespace Blockchain.Investments.Api.Controllers
     public class AssetsController : Controller
     {
         private readonly ILogger<AssetsController> _logger;
-        private AssetRepo _repo;
+        private IRepository<Asset> _repo;
 
-        public AssetsController (ILogger<AssetsController> logger, AssetRepo repo)
+        public AssetsController (ILogger<AssetsController> logger, IRepository<Asset> repo)
         {
             _logger = logger;
             _repo = repo;

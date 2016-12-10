@@ -6,26 +6,26 @@ using Blockchain.Investments.Core.Model;
 
 namespace Blockchain.Investments.Core.Repositories
 {
-    public class AssetRepo
+    public class AssetRepository : IRepository<Asset>
     {
         MongoClient _client;
         MongoServer _server;
         MongoDatabase _db;
  
-        public AssetRepo()
+        public AssetRepository()
         {
             _client = new MongoClient("mongodb://localhost");
             _server = _client.GetServer();
             _db = _server.GetDatabase("expense-point");      
         }
  
-        public IEnumerable<Asset> GetAssets()
+        public IEnumerable<Asset> FindAll()
         {
             return _db.GetCollection<Asset>("Assets").FindAll();
         }
  
  
-        public Asset GetAsset(ObjectId id)
+        public Asset FindById(ObjectId id)
         {
             var res = Query<Asset>.EQ(p=>p.Id,id);
             return _db.GetCollection<Asset>("Assets").FindOne(res);
@@ -37,7 +37,7 @@ namespace Blockchain.Investments.Core.Repositories
             return p;
         }
  
-        public void Update(ObjectId id,Asset p)
+        public void Update(ObjectId id, Asset p)
         {
             p.Id = id;
             var res = Query<Asset>.EQ(pd => pd.Id,id);

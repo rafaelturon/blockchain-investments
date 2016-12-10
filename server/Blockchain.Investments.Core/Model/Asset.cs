@@ -7,9 +7,8 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Blockchain.Investments.Core.Model
 {
-    public class Asset
+    public class Asset : IEntity
     {
-        public ObjectId Id { get; set; }
         public string Name {get; set;}
         public double Value {get; set;}
         public DateTime Date {get; set;}

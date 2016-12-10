@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Blockchain.Investments.Core.Model;
+using Blockchain.Investments.Core.Repositories;
 
 namespace Blockchain.Investments.Api
 {
@@ -29,6 +31,8 @@ namespace Blockchain.Investments.Api
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddSingleton<IRepository<Asset>, AssetRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
