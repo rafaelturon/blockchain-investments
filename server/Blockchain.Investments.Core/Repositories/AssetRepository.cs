@@ -14,8 +14,8 @@ namespace Blockchain.Investments.Core.Repositories
  
         public AssetRepository()
         {
-            _client = new MongoClient("mongodb://localhost");
-            _server = _client.GetServer();
+            _client = new MongoClient("mongodb://localhost:27017");
+            _server = _client.GetServer();//http://stackoverflow.com/questions/29597574/mongodb-get-server
             _db = _server.GetDatabase("expense-point");      
         }
  

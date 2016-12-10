@@ -29,39 +29,72 @@ namespace Blockchain.Investments.Api.Controllers
         public IEnumerable<Asset> Get()
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
-            AssetControl assetControl = new AssetControl();
-
-            return assetControl.List();
+            
+            return _repo.FindAll();
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{id:length(24)}")]
+        public IActionResult Get(string id)
         {
             _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id);
-            Asset asset = new Asset();
-            asset.Name = "test";
-            return asset.Name;
+            
+            var asset = _repo.FindById(new ObjectId(id));
+            if (asset == null)
+            {
+                _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id);
+                return NotFound();
+            }
+            return new ObjectResult(asset);
         }
 
         // POST api/values
         [HttpPost]
-        public IActionResult  Post([FromBody]Asset asset)
+        public IActionResult Post([FromBody]Asset asset)
         {
-            _repo.Create(asset);
+            if (asset == null)
+            {
+                return BadRequest();
+            }
+            var createdAsset = _repo.Create(asset);
+            _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Created", createdAsset.UniqueId);
             return new OkObjectResult(asset);
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public IActionResult Put([FromBody]Asset asset)
         {
+            if (asset == null || string.IsNullOrEmpty(asset.UniqueId))
+            {
+                return BadRequest();
+            }
+
+            var currentAsset = _repo.FindById(new ObjectId(asset.UniqueId));
+            if (currentAsset == null)
+            {
+                _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", asset.UniqueId);
+                return NotFound();
+            }
+            
+            _repo.Update(new ObjectId(asset.UniqueId), asset);
+            _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", asset.UniqueId);
+            return new OkResult();
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{id:length(24)}")]
+        public IActionResult Delete(string id)
         {
+            var asset = _repo.FindById(new ObjectId(id));
+            if (asset == null)
+            {
+                return NotFound();
+            }
+ 
+            _repo.Remove(asset.Id);
+            _logger.LogInformation(LoggingEvents.DELETE_ITEM, "Item {0} Deleted", id);
+            return new OkResult();
         }
     }
 }
