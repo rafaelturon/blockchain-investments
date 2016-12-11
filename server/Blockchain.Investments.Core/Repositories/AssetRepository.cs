@@ -11,12 +11,15 @@ namespace Blockchain.Investments.Core.Repositories
         MongoClient _client;
         MongoServer _server;
         MongoDatabase _db;
- 
-        public AssetRepository()
+        
+        public void Initialize(string connection, string database) 
         {
-            _client = new MongoClient("mongodb://localhost:27017");
-            _server = _client.GetServer();//http://stackoverflow.com/questions/29597574/mongodb-get-server
-            _db = _server.GetDatabase("expense-point");      
+            _client = new MongoClient(connection);
+            // The MongoServer class was deprecated in version 2.0.
+            // http://stackoverflow.com/questions/29597574/mongodb-get-server
+            // http://mongodb.github.io/mongo-csharp-driver/2.0/reference/driver/crud/
+            _server = _client.GetServer();
+            _db = _server.GetDatabase(database); 
         }
  
         public IEnumerable<Asset> FindAll()

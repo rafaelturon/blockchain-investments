@@ -6,7 +6,7 @@ namespace Blockchain.Investments.Core.Repositories
 {
     public interface IRepository<T> where T: IEntity
     {
-
+        void Initialize(string connection, string database);
         IEnumerable<T> FindAll();
         T Create(T entity);
         void Remove(ObjectId Id);

@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft​.Extensions​.Options;
 using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.Model;
-using Blockchain.Investments.Core.Control;
 using Blockchain.Investments.Core.Repositories;
 using MongoDB.Bson;
 
@@ -17,11 +14,16 @@ namespace Blockchain.Investments.Api.Controllers
     {
         private readonly ILogger<AssetsController> _logger;
         private IRepository<Asset> _repo;
+        private readonly AppConfig _optionsAccessor;
 
-        public AssetsController (ILogger<AssetsController> logger, IRepository<Asset> repo)
+        public AssetsController (ILogger<AssetsController> logger, IRepository<Asset> repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
             _repo = repo;
+            _optionsAccessor = optionsAccessor.Value;
+            string conn = _optionsAccessor.MONGOLAB_URI;
+            repo.Initialize(conn, "expense-point");
+            
         }
 
         // GET api/values
