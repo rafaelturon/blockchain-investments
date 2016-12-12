@@ -5,14 +5,13 @@ matrix:
     - os: linux # Ubuntu 14.04
       dist: trusty
       sudo: required
-      dotnet: 1.1.0
+      dotnet: 1.0.0-preview2-1-003177
 
 script:
-  # Run a new console app
-  - mkdir -p "test/test-dotnet-new" && pushd "test/test-dotnet-new"
-  - dotnet new
+  # Run unit tests
+  - cd test/Blockchain.Investments.Api.Tests/
   - dotnet restore
-  - dotnet --verbose run a b
+  - dotnet test
   - popd
 #language: node_js
 #node_js:
