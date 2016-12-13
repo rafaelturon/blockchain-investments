@@ -5,7 +5,7 @@ using Microsoft​.Extensions​.Options;
 using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.Model;
 using Blockchain.Investments.Core.Repositories;
-using MongoDB.Bson;
+using Blockchain.Investments.Core.Control;
 
 namespace Blockchain.Investments.Api.Controllers
 {
@@ -13,6 +13,7 @@ namespace Blockchain.Investments.Api.Controllers
     public class AssetsController : Controller
     {
         private readonly ILogger<AssetsController> _logger;
+        private AssetControl _assetControl;
         private IRepository<Asset> _repo;
         private readonly AppConfig _optionsAccessor;
 
@@ -22,8 +23,7 @@ namespace Blockchain.Investments.Api.Controllers
             _repo = repo;
             _optionsAccessor = optionsAccessor.Value;
             string conn = _optionsAccessor.MONGOLAB_URI;
-            repo.Initialize(conn, "expense-point");
-            
+            _assetControl = new AssetControl(conn, "expense-point");
         }
 
         // GET api/values
@@ -31,8 +31,7 @@ namespace Blockchain.Investments.Api.Controllers
         public IEnumerable<Asset> Get()
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
-            
-            return _repo.FindAll();
+            return _assetControl.List();
         }
 
         // GET api/values/5
@@ -41,7 +40,7 @@ namespace Blockchain.Investments.Api.Controllers
         {
             _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id);
             
-            var asset = _repo.FindById(new ObjectId(id));
+            var asset = _assetControl.Read(id);
             if (asset == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id);
@@ -58,7 +57,7 @@ namespace Blockchain.Investments.Api.Controllers
             {
                 return BadRequest();
             }
-            var createdAsset = _repo.Create(asset);
+            var createdAsset = _assetControl.Create(asset);
             _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Created", createdAsset.UniqueId);
             return new OkObjectResult(asset);
         }
@@ -72,14 +71,14 @@ namespace Blockchain.Investments.Api.Controllers
                 return BadRequest();
             }
 
-            var currentAsset = _repo.FindById(new ObjectId(asset.UniqueId));
+            var currentAsset = _assetControl.Read(asset.UniqueId);
             if (currentAsset == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", asset.UniqueId);
                 return NotFound();
             }
             
-            _repo.Update(new ObjectId(asset.UniqueId), asset);
+            _assetControl.Update(asset.UniqueId, asset);
             _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", asset.UniqueId);
             return new OkResult();
         }
@@ -88,13 +87,13 @@ namespace Blockchain.Investments.Api.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
-            var asset = _repo.FindById(new ObjectId(id));
+            var asset = _assetControl.Read(id);
             if (asset == null)
             {
                 return NotFound();
             }
  
-            _repo.Remove(asset.Id);
+            _assetControl.Delete(asset.Id);
             _logger.LogInformation(LoggingEvents.DELETE_ITEM, "Item {0} Deleted", id);
             return new OkResult();
         }

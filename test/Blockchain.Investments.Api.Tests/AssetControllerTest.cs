@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft​.Extensions​.Options;
-using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.Model;
 using Blockchain.Investments.Core.Repositories;
 using FakeItEasy;
@@ -45,7 +43,6 @@ namespace Blockchain.Investments.Api.Controllers
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnAsset = Assert.IsType<Asset>(okResult.Value);
-            //mockRepo.Verify();
             Assert.Equal(testId, returnAsset.UniqueId);
             Assert.Equal(testName, returnAsset.Name);
         }
