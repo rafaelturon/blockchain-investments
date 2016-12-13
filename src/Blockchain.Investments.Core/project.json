@@ -11,7 +11,10 @@
       "imports": "dnxcore50"
     }
   },
-
+  "buildOptions": {
+    "preserveCompilationContext": true,
+    "debugType": "portable"
+  },
   "tooling": {
     "defaultNamespace": "Blockchain.Investments.Core"
   }
