@@ -10,5 +10,12 @@ namespace Blockchain.Investments.Api.Controllers
         {
             return Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion;
         }
+
+        [HttpGet]
+        [Route("echo")]
+        public string Echo(string message) 
+        {
+            return message;
+        }
     }
 }
