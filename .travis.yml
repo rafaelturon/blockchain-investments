@@ -12,7 +12,7 @@ script:
   - dotnet restore
   - cd test/Blockchain.Investments.Api.Tests/
   - dotnet test
-  - popd
+#  - popd
 #language: node_js
 #node_js:
 #  - 'stable'
