@@ -1,0 +1,24 @@
+<h1>Assets</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!assets"><em>Loading...</em></p>
+
+<table class='table' *ngIf="assets">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+            <th>Date</th>
+            <th>Percentage</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let asset of assets">
+            <td>{{ asset.name }}</td>
+            <td>{{ asset.value }}</td>
+            <td>{{ asset.date }}</td>
+            <td>{{ asset.percentage }}</td>
+        </tr>
+    </tbody>
+</table>

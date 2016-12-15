@@ -9,19 +9,16 @@ Blockchain Investments is an open-source project to increase control over your b
 # blockchain-investments
 
 **Client**
-TBD
+Angular 2 TypeScript app packaged with WebPack and Bootstrap layout and styling.
 
 **Server**
 ASPNET Core backend with a restful API using Kestrel Web API Controllers. Persistance layer using MongoDB.
 
 ## Build & development
-Client: TBD
-Server: Run `dotnet build` for building and `dotnet run` for preview.
+Running `dotnet build` will build and `dotnet run` will present a preview.
 
 ## Testing
-Client: TBD
-Server: Running `dotnet test` will run the unit tests with xunit.
+Running `dotnet test` will run the unit tests with xunit.
 
 ## Deployment
-Client: TBD
-Server: Running `dotnet publish` will run the deployment steps.
+Running `dotnet publish` will run the deployment steps.
