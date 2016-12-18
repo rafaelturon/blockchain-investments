@@ -1,28 +1,32 @@
 {
-  "title": "Blockchain.Investments.Api",
-  "version": "1.0.0.1",
   "dependencies": {
     "Microsoft.NETCore.App": {
       "version": "1.1.0",
       "type": "platform"
     },
+    "Microsoft.AspNetCore.Diagnostics": "1.1.0",
     "Microsoft.AspNetCore.Mvc": "1.1.0",
-    "Microsoft.AspNetCore.Routing": "1.1.0",
+    "Microsoft.AspNetCore.Razor.Tools": {
+      "version": "1.0.0-preview2-final",
+      "type": "build"
+    },
     "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
+    "Microsoft.AspNetCore.SpaServices": "1.1.0-*",
+    "Microsoft.AspNetCore.StaticFiles": "1.1.0",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
-    "Microsoft.Extensions.Configuration.FileExtensions": "1.1.0",
     "Microsoft.Extensions.Configuration.Json": "1.1.0",
     "Microsoft.Extensions.Configuration.CommandLine": "1.1.0",
     "Microsoft.Extensions.Logging": "1.1.0",
     "Microsoft.Extensions.Logging.Console": "1.1.0",
     "Microsoft.Extensions.Logging.Debug": "1.1.0",
-    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
-    "Blockchain.Investments.Core": { "target": "project" }
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0"
   },
 
   "tools": {
-    "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.1.0-preview4-final"
+    "Microsoft.AspNetCore.Razor.Tools": "1.0.0-preview2-final",
+    "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final",
+    "Microsoft.DotNet.Watcher.Tools": "1.0.0-preview2-final"
   },
 
   "frameworks": {
@@ -37,7 +41,9 @@
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
-    "debugType": "portable"
+    "compile": {
+      "exclude": ["node_modules"]
+    }
   },
 
   "runtimeOptions": {
@@ -48,19 +54,27 @@
 
   "publishOptions": {
     "include": [
-      "wwwroot",
-      "**/*.cshtml",
       "appsettings.json",
-      "hosting.json",
-      "web.config"
+      "ClientApp/dist",
+      "Views",
+      "web.config",
+      "wwwroot"
+    ],
+    "exclude": [
+      "wwwroot/dist/*.map"
     ]
   },
 
   "scripts": {
+    "prepublish": [
+      "npm install",
+      "node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod",
+      "node node_modules/webpack/bin/webpack.js --env.prod"
+    ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   },
 
   "tooling": {
-    "defaultNamespace": "Blockchain.Investments.Api"
+    "defaultNamespace": "Blockchain.Investments.Web"
   }
 }
