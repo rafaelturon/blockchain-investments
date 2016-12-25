@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Blockchain.Investments.Api;
 using Blockchain.Investments.Core.Model;
 using Blockchain.Investments.Core.Repositories;
 
-namespace BlockchainInvestmentsWeb
+namespace Blockchain.Investments.Api
 {
     public class Startup
     {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Xunit;
 
-namespace Blockchain.Investments.Api 
+namespace Blockchain.Investments.Api
 {
     public class BlockchainInvestmentsApiRequestTest
     {

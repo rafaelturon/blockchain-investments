@@ -19,7 +19,7 @@
         "Microsoft.Extensions.Logging.Debug": "1.1.0",
         "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
         "Microsoft.AspNetCore.TestHost": "1.1.0",
-        "Blockchain.Investments.Api": { "target": "project" }
+        "Blockchain.Investments.Web": { "target": "project" }
     },
     "frameworks": {
         "netcoreapp1.1": {

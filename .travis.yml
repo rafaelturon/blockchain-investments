@@ -10,7 +10,7 @@ matrix:
 script:
   # Run unit tests
   - dotnet restore
-  - cd test/Blockchain.Investments.Api.Tests/
+  - cd test/Blockchain.Investments.Web.Tests/
   - dotnet test
 #  - popd
 #language: node_js
