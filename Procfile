@@ -1,1 +1,1 @@
-web: cd src/Blockchain.Investments.Web && dotnet run --server.urls http://+:\5000
+web: dotnet run
