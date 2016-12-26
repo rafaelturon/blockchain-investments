@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlockchainInvestmentsWeb.Controllers
+namespace Blockchain.Investments.Api.Controllers
 {
     public class HomeController : Controller
     {
