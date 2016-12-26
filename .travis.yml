@@ -12,8 +12,6 @@ services:
 
 before_install:
   - docker build -t rafaelturon/blockchain-investments .
-  - docker run -p 80:5000 rafaelturon/blockchain-investments
-  - docker ps -a
   - docker tag rafaelturon/blockchain-investments registry.heroku.com/blockchain-investments/web
 
 script:
