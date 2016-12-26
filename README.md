@@ -12,7 +12,7 @@ Blockchain Investments is an open-source project to increase control over your b
 Angular 2 TypeScript app packaged with WebPack and Bootstrap layout and styling.
 
 **Server**
-ASPNET Core backend with a restful API using Kestrel Web API Controllers. Persistance layer using MongoDB.
+ASPNET Core backend with a restful API using Kestrel Web API Controllers. Persistence layer using MongoDB.
 
 ## Build & development
 Running `dotnet build` will build and `dotnet run` will present a preview.
