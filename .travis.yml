@@ -18,6 +18,7 @@ script:
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    cd .. && cd ..;
     docker login --email=_ --username=_ --password=$HEROKU_AUTH_TOKEN registry.heroku.com;
     docker build -t rafaelturon/blockchain-investments .;
     docker tag rafaelturon/blockchain-investments registry.heroku.com/blockchain-investments/web;
