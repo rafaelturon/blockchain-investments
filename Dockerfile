@@ -11,4 +11,4 @@ WORKDIR /app/src/Blockchain.Investments.Web
 
 RUN ["dotnet", "restore"]
 CMD dotnet publish -c Debug -o bin/output
-CMD dotnet bin/output/Blockchain.Investments.Web.dll --server.urls http://0.0.0.0
+CMD dotnet bin/output/Blockchain.Investments.Web.dll --server.urls http://0.0.0.0:$PORT
