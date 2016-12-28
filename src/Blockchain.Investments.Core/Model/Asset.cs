@@ -5,7 +5,7 @@ namespace Blockchain.Investments.Core.Model
     public class Asset : IEntity
     {
         private string id = string.Empty;
-
+        public string AccountId {get;set;}
         public string Name {get; set;}
         public double Value {get; set;}
         public DateTime Date {get; set;}
