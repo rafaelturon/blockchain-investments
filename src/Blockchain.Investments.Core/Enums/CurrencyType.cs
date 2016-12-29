@@ -1,12 +1,13 @@
 namespace Blockchain.Investments.Core.Model
 {
-    public enum CommodityType
+    public enum CurrencyType
     {
            Forex = 1,
            Crypto = 2,
-           Metals = 3,
+           Metal = 3,
            Stock = 4,
-           Bonds = 5,
-           ETF = 6
+           Bond = 5,
+           ETF = 6,
+           Commodity = 7
     }
 }

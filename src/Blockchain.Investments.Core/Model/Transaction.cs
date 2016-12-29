@@ -7,7 +7,7 @@ namespace Blockchain.Investments.Core.Model
         private string id = string.Empty;
         public JournalType Journal {get; set;}
         public Account Account {get; set;}
-        public Commodity Commodity {get;set;}
+        public Currency Currency {get;set;}
         public DateTime Date {get; set;}
         public double Amount {get; set;}
         public string Description {get; set;}
@@ -15,7 +15,7 @@ namespace Blockchain.Investments.Core.Model
         public string CreatedBy {get; set;}
         
         public TransactionState State {get;set;}
-        public TransactionPricing Pricing {get;set;}
+        public PricingMechanism Pricing {get;set;}
 
         public string Tag {get;set;}
         public string UniqueId

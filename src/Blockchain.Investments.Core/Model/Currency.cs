@@ -1,11 +1,11 @@
 namespace Blockchain.Investments.Core.Model
 {
-    public class Commodity : IEntity
+    public class Currency : IEntity
     {
         private string id = string.Empty;
         public string Title {get; set;}
         public string Ticker {get;set;}
-        public CommodityType Type {get;set;}
+        public CurrencyType Type {get;set;}
         public string ImageUrl {get;set;}
         public string UniqueId
         {

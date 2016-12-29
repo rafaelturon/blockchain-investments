@@ -1,11 +1,11 @@
 namespace Blockchain.Investments.Core.Model
 {
-    public class Business : IEntity
+    public class Organization : IEntity
     {
         private string id = string.Empty;
         public string Title {get; set;}
+        public string Description {get;set;}
         public string Country {get;set;}
-        public string Institution {get;set;}
         public string Branch {get;set;}
         public string AccountNumber {get;set;}
         public BusinessType Type {get;set;}
