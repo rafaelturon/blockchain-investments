@@ -5,7 +5,6 @@ using Microsoft​.Extensions​.Options;
 using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.Model;
 using Blockchain.Investments.Core.Repositories;
-using Blockchain.Investments.Core.Control;
 
 namespace Blockchain.Investments.Api.Controllers
 {
@@ -13,15 +12,17 @@ namespace Blockchain.Investments.Api.Controllers
     public class CurrencyController : Controller
     {
         private readonly ILogger<CurrencyController> _logger;
-        private CurrencyControl _currencyControl;
+        private IRepository _repo;
         private readonly AppConfig _optionsAccessor;
 
         public CurrencyController (ILogger<CurrencyController> logger, IRepository repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
+            _repo = repo;
             _optionsAccessor = optionsAccessor.Value;
+
             string conn = _optionsAccessor.MONGOLAB_URI;
-            _currencyControl = new CurrencyControl(conn, Constants.DatabaseName, repo);
+            _repo.Initialize(conn, Constants.DatabaseName, "Currency");
         }
 
         // GET api/values
@@ -29,7 +30,7 @@ namespace Blockchain.Investments.Api.Controllers
         public IEnumerable<Currency> Get()
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
-            return _currencyControl.List();
+            return _repo.FindAll<Currency>();
         }
 
         // GET api/values/5
@@ -38,7 +39,7 @@ namespace Blockchain.Investments.Api.Controllers
         {
             _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id);
             
-            var currency = _currencyControl.Read(id);
+            var currency = _repo.FindById<Currency>(id);
             if (currency == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id);
@@ -55,7 +56,7 @@ namespace Blockchain.Investments.Api.Controllers
             {
                 return BadRequest();
             }
-            var createdCurrency = _currencyControl.Create(currency);
+            var createdCurrency = _repo.Create(currency);
             _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Created", createdCurrency.UniqueId);
             return new OkObjectResult(currency);
         }
@@ -69,14 +70,14 @@ namespace Blockchain.Investments.Api.Controllers
                 return BadRequest();
             }
 
-            var currentCurrency = _currencyControl.Read(currency.UniqueId);
+            var currentCurrency = _repo.FindById<Currency>(currency.UniqueId);
             if (currentCurrency == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", currency.UniqueId);
                 return NotFound();
             }
             
-            _currencyControl.Update(currency.UniqueId, currency);
+            _repo.Update(currency.UniqueId, currency);
             _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", currency.UniqueId);
             return new OkResult();
         }
@@ -85,13 +86,13 @@ namespace Blockchain.Investments.Api.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
-            var currency = _currencyControl.Read(id);
+            var currency = _repo.FindById<Currency>(id);
             if (currency == null)
             {
                 return NotFound();
             }
  
-            _currencyControl.Delete(currency.Id);
+            _repo.Remove<Currency>(id);
             _logger.LogInformation(LoggingEvents.DELETE_ITEM, "Item {0} Deleted", id);
             return new OkResult();
         }

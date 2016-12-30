@@ -5,7 +5,6 @@ using Microsoft​.Extensions​.Options;
 using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.Model;
 using Blockchain.Investments.Core.Repositories;
-using Blockchain.Investments.Core.Control;
 
 namespace Blockchain.Investments.Api.Controllers
 {
@@ -13,15 +12,17 @@ namespace Blockchain.Investments.Api.Controllers
     public class PeriodController : Controller
     {
         private readonly ILogger<PeriodController> _logger;
-        private PeriodControl _periodControl;
+        private IRepository _repo;
         private readonly AppConfig _optionsAccessor;
 
         public PeriodController (ILogger<PeriodController> logger, IRepository repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
+            _repo = repo;
             _optionsAccessor = optionsAccessor.Value;
+
             string conn = _optionsAccessor.MONGOLAB_URI;
-            _periodControl = new PeriodControl(conn, Constants.DatabaseName, repo);
+            _repo.Initialize(conn, Constants.DatabaseName, "Period");
         }
 
         // GET api/values
@@ -29,7 +30,7 @@ namespace Blockchain.Investments.Api.Controllers
         public IEnumerable<Period> Get()
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
-            return _periodControl.List();
+            return _repo.FindAll<Period>();
         }
 
         // GET api/values/5
@@ -38,7 +39,7 @@ namespace Blockchain.Investments.Api.Controllers
         {
             _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id);
             
-            var period = _periodControl.Read(id);
+            var period = _repo.FindById<Period>(id);
             if (period == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id);
@@ -55,7 +56,7 @@ namespace Blockchain.Investments.Api.Controllers
             {
                 return BadRequest();
             }
-            var createdPeriod = _periodControl.Create(period);
+            var createdPeriod = _repo.Create(period);
             _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Created", createdPeriod.UniqueId);
             return new OkObjectResult(period);
         }
@@ -69,14 +70,14 @@ namespace Blockchain.Investments.Api.Controllers
                 return BadRequest();
             }
 
-            var currentPeriod = _periodControl.Read(period.UniqueId);
+            var currentPeriod = _repo.FindById<Period>(period.UniqueId);
             if (currentPeriod == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", period.UniqueId);
                 return NotFound();
             }
             
-            _periodControl.Update(period.UniqueId, period);
+            _repo.Update(period.UniqueId, period);
             _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", period.UniqueId);
             return new OkResult();
         }
@@ -85,13 +86,13 @@ namespace Blockchain.Investments.Api.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
-            var period = _periodControl.Read(id);
+            var period = _repo.FindById<Period>(id);
             if (period == null)
             {
                 return NotFound();
             }
  
-            _periodControl.Delete(period.Id);
+            _repo.Remove<Period>(id);
             _logger.LogInformation(LoggingEvents.DELETE_ITEM, "Item {0} Deleted", id);
             return new OkResult();
         }

@@ -5,7 +5,6 @@ using Microsoft​.Extensions​.Options;
 using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.Model;
 using Blockchain.Investments.Core.Repositories;
-using Blockchain.Investments.Core.Control;
 
 namespace Blockchain.Investments.Api.Controllers
 {
@@ -13,15 +12,17 @@ namespace Blockchain.Investments.Api.Controllers
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
-        private AccountControl _accountControl;
         private readonly AppConfig _optionsAccessor;
+        private IRepository _repo;
 
         public AccountController (ILogger<AccountController> logger, IRepository repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
             _optionsAccessor = optionsAccessor.Value;
+            _repo = repo;
+            
             string conn = _optionsAccessor.MONGOLAB_URI;
-            _accountControl = new AccountControl(conn, Constants.DatabaseName, repo);
+            _repo.Initialize(conn, Constants.DatabaseName, "Account");
         }
 
         // GET api/values
@@ -29,7 +30,7 @@ namespace Blockchain.Investments.Api.Controllers
         public IEnumerable<Account> Get()
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
-            return _accountControl.List();
+            return _repo.FindAll<Account>();
         }
 
         // GET api/values/5
@@ -38,7 +39,7 @@ namespace Blockchain.Investments.Api.Controllers
         {
             _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id);
             
-            var account = _accountControl.Read(id);
+            var account = _repo.FindById<Account>(id);
             if (account == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id);
@@ -55,7 +56,7 @@ namespace Blockchain.Investments.Api.Controllers
             {
                 return BadRequest();
             }
-            var createdAccount = _accountControl.Create(account);
+            var createdAccount = _repo.Create(account);
             _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Created", createdAccount.UniqueId);
             return new OkObjectResult(account);
         }
@@ -69,14 +70,14 @@ namespace Blockchain.Investments.Api.Controllers
                 return BadRequest();
             }
 
-            var currentAccount = _accountControl.Read(account.UniqueId);
+            var currentAccount = _repo.FindById<Account>(account.UniqueId);
             if (currentAccount == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", account.UniqueId);
                 return NotFound();
             }
             
-            _accountControl.Update(account.UniqueId, account);
+            _repo.Update(account.UniqueId, account);
             _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", account.UniqueId);
             return new OkResult();
         }
@@ -85,13 +86,13 @@ namespace Blockchain.Investments.Api.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
-            var account = _accountControl.Read(id);
+            var account = _repo.FindById<Account>(id);
             if (account == null)
             {
                 return NotFound();
             }
  
-            _accountControl.Delete(account.Id);
+            _repo.Remove<Account>(id);
             _logger.LogInformation(LoggingEvents.DELETE_ITEM, "Item {0} Deleted", id);
             return new OkResult();
         }
