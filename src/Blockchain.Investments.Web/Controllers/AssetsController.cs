@@ -14,16 +14,14 @@ namespace Blockchain.Investments.Api.Controllers
     {
         private readonly ILogger<AssetsController> _logger;
         private AssetControl _assetControl;
-        private IRepository<Asset> _repo;
         private readonly AppConfig _optionsAccessor;
 
-        public AssetsController (ILogger<AssetsController> logger, IRepository<Asset> repo, IOptions<AppConfig> optionsAccessor)
+        public AssetsController (ILogger<AssetsController> logger, IRepository repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
-            _repo = repo;
             _optionsAccessor = optionsAccessor.Value;
             string conn = _optionsAccessor.MONGOLAB_URI;
-            _assetControl = new AssetControl(conn, "expense-point");
+            _assetControl = new AssetControl(conn, Constants.DatabaseName, repo);
         }
 
         // GET api/values

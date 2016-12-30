@@ -33,11 +33,7 @@ namespace Blockchain.Investments.Api
             services.AddMvc();
 
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<IRepository<Asset>, AssetRepository>();
-            services.AddSingleton<IRepository<Currency>, CurrencyRepository>();
-            services.AddSingleton<IRepository<Organization>, OrganizationRepository>();
-            services.AddSingleton<IRepository<Account>, AccountRepository>();
-            services.AddSingleton<IRepository<Period>, PeriodRepository>();
+            services.AddSingleton<IRepository,MongoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

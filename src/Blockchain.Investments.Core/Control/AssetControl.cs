@@ -7,19 +7,19 @@ namespace Blockchain.Investments.Core.Control
 {
     public class AssetControl
     {
-        private IRepository<Asset> _repo;
-        public AssetControl(string connection, string database) 
+        private IRepository _repo;
+        public AssetControl(string connection, string database, IRepository repo) 
         {
-            _repo = new AssetRepository();
-            _repo.Initialize(connection, database);
+            _repo = repo;
+            _repo.Initialize(connection, database, "Assets");
         }
         public IEnumerable<Asset> List() 
         {
-            return _repo.FindAll();
+            return _repo.FindAll<Asset>();
         }
         public Asset Read(string id) 
         {
-            return _repo.FindById(new ObjectId(id));
+            return _repo.FindById<Asset>(new ObjectId(id));
         }
 
         public Asset Create(Asset asset) 
@@ -33,7 +33,7 @@ namespace Blockchain.Investments.Core.Control
         }
         public void Delete(ObjectId id) 
         {
-            _repo.Remove(id);
+            _repo.Remove<Asset>(id);
         }
     }
 }

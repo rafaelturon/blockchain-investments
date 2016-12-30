@@ -14,16 +14,14 @@ namespace Blockchain.Investments.Api.Controllers
     {
         private readonly ILogger<PeriodController> _logger;
         private PeriodControl _periodControl;
-        private IRepository<Period> _repo;
         private readonly AppConfig _optionsAccessor;
 
-        public PeriodController (ILogger<PeriodController> logger, IRepository<Period> repo, IOptions<AppConfig> optionsAccessor)
+        public PeriodController (ILogger<PeriodController> logger, IRepository repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
-            _repo = repo;
             _optionsAccessor = optionsAccessor.Value;
             string conn = _optionsAccessor.MONGOLAB_URI;
-            _periodControl = new PeriodControl(conn, Constants.DatabaseName);
+            _periodControl = new PeriodControl(conn, Constants.DatabaseName, repo);
         }
 
         // GET api/values

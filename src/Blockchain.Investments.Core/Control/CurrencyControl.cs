@@ -7,19 +7,19 @@ namespace Blockchain.Investments.Core.Control
 {
     public class CurrencyControl
     {
-        private IRepository<Currency> _repo;
-        public CurrencyControl(string connection, string database) 
+        private IRepository _repo;
+        public CurrencyControl(string connection, string database, IRepository repo) 
         {
-            _repo = new CurrencyRepository();
-            _repo.Initialize(connection, database);
+            _repo = repo;
+            _repo.Initialize(connection, database, "Currency");
         }
         public IEnumerable<Currency> List() 
         {
-            return _repo.FindAll();
+            return _repo.FindAll<Currency>();
         }
         public Currency Read(string id) 
         {
-            return _repo.FindById(new ObjectId(id));
+            return _repo.FindById<Currency>(new ObjectId(id));
         }
 
         public Currency Create(Currency entity) 
@@ -33,7 +33,7 @@ namespace Blockchain.Investments.Core.Control
         }
         public void Delete(ObjectId id) 
         {
-            _repo.Remove(id);
+            _repo.Remove<Currency>(id);
         }
     }
 }

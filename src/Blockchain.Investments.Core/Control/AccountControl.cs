@@ -7,19 +7,19 @@ namespace Blockchain.Investments.Core.Control
 {
     public class AccountControl
     {
-        private IRepository<Account> _repo;
-        public AccountControl(string connection, string database) 
+        private IRepository _repo;
+        public AccountControl(string connection, string database, IRepository repo) 
         {
-            _repo = new AccountRepository();
-            _repo.Initialize(connection, database);
+            _repo = repo;
+            _repo.Initialize(connection, database, "Account");
         }
         public IEnumerable<Account> List() 
         {
-            return _repo.FindAll();
+            return _repo.FindAll<Account>();
         }
         public Account Read(string id) 
         {
-            return _repo.FindById(new ObjectId(id));
+            return _repo.FindById<Account>(new ObjectId(id));
         }
 
         public Account Create(Account entity) 
@@ -33,7 +33,7 @@ namespace Blockchain.Investments.Core.Control
         }
         public void Delete(ObjectId id) 
         {
-            _repo.Remove(id);
+            _repo.Remove<Account>(id);
         }
     }
 }

@@ -14,16 +14,14 @@ namespace Blockchain.Investments.Api.Controllers
     {
         private readonly ILogger<OrganizationController> _logger;
         private OrganizationControl _organizationControl;
-        private IRepository<Organization> _repo;
         private readonly AppConfig _optionsAccessor;
 
-        public OrganizationController (ILogger<OrganizationController> logger, IRepository<Organization> repo, IOptions<AppConfig> optionsAccessor)
+        public OrganizationController (ILogger<OrganizationController> logger, IRepository repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
-            _repo = repo;
             _optionsAccessor = optionsAccessor.Value;
             string conn = _optionsAccessor.MONGOLAB_URI;
-            _organizationControl = new OrganizationControl(conn, Constants.DatabaseName);
+            _organizationControl = new OrganizationControl(conn, Constants.DatabaseName, repo);
         }
 
         // GET api/values

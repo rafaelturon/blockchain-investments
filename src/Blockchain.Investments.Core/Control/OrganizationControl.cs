@@ -7,19 +7,19 @@ namespace Blockchain.Investments.Core.Control
 {
     public class OrganizationControl
     {
-        private IRepository<Organization> _repo;
-        public OrganizationControl(string connection, string database) 
+        private IRepository _repo;
+        public OrganizationControl(string connection, string database, IRepository repo) 
         {
-            _repo = new OrganizationRepository();
-            _repo.Initialize(connection, database);
+            _repo = repo;
+            _repo.Initialize(connection, database, "Organization");
         }
         public IEnumerable<Organization> List() 
         {
-            return _repo.FindAll();
+            return _repo.FindAll<Organization>();
         }
         public Organization Read(string id) 
         {
-            return _repo.FindById(new ObjectId(id));
+            return _repo.FindById<Organization>(new ObjectId(id));
         }
 
         public Organization Create(Organization entity) 
@@ -33,7 +33,7 @@ namespace Blockchain.Investments.Core.Control
         }
         public void Delete(ObjectId id) 
         {
-            _repo.Remove(id);
+            _repo.Remove<Organization>(id);
         }
     }
 }
