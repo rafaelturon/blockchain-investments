@@ -1,11 +1,22 @@
+using System.Reflection;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Blockchain.Investments.Core.Model;
+using CQRSlite.Config;
+using CQRSlite.Bus;
+using CQRSlite.Commands;
+using CQRSlite.Events;
+using CQRSlite.Domain;
+using CQRSlite.Cache;
+using Scrutor;
 using Blockchain.Investments.Core.Repositories;
+using Blockchain.Investments.Core.WriteModel;
+using Blockchain.Investments.Core.WriteModel.Handlers;
+using Blockchain.Investments.Core.ReadModel;
 
 namespace Blockchain.Investments.Api
 {
@@ -29,11 +40,46 @@ namespace Blockchain.Investments.Api
             // Register the IConfiguration instance which AppConfig binds against.
             services.Configure<AppConfig>(Configuration);
             
+            #region CQRS
+            services.AddMemoryCache();
+            
+            //Add Cqrs services
+            services.AddSingleton<InProcessBus>(new InProcessBus());
+            services.AddSingleton<ICommandSender>(y => y.GetService<InProcessBus>());
+            services.AddSingleton<IEventPublisher>(y => y.GetService<InProcessBus>());
+            services.AddSingleton<IHandlerRegistrar>(y => y.GetService<InProcessBus>());
+            services.AddScoped<ISession, Session>();
+            services.AddSingleton<IEventStore, MongoEventStore>();
+            services.AddScoped<ICache, CQRSlite.Cache.MemoryCache>();
+            services.AddScoped<CQRSlite.Domain.IRepository>(y => new CacheRepository(new Repository(y.GetService<IEventStore>()), y.GetService<IEventStore>(), y.GetService<ICache>()));
+            services.AddTransient<IReadModelFacade, ReadModelFacade>();
+            
+            //Scan for commandhandlers and eventhandlers
+            services.Scan(scan => scan
+                .FromAssemblies(typeof(TransactionCommandHandlers).GetTypeInfo().Assembly)
+                    .AddClasses(classes => classes.Where(x => {
+                        var allInterfaces = x.GetInterfaces();
+                        return 
+                            allInterfaces.Any(y => y.GetTypeInfo().IsGenericType && y.GetTypeInfo().GetGenericTypeDefinition() == typeof(ICommandHandler<>)) ||
+                            allInterfaces.Any(y => y.GetTypeInfo().IsGenericType && y.GetTypeInfo().GetGenericTypeDefinition() == typeof(IEventHandler<>));
+                    }))
+                    .AsSelf()
+                    .WithTransientLifetime()
+            );
+
+            //Register bus
+            var serviceProvider = services.BuildServiceProvider();
+            var registrar = new BusRegistrar(new DependencyResolver(serviceProvider));
+            registrar.Register(typeof(TransactionCommandHandlers));
+            
+            #endregion
+
             // Add framework services.
             services.AddMvc();
 
+            // Add application services
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<IRepository,MongoRepository>();
+            services.AddSingleton<Blockchain.Investments.Core.Repositories.IRepository, MongoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

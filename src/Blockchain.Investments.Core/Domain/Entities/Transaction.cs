@@ -33,4 +33,21 @@ namespace Blockchain.Investments.Core.Model
             }
         }
     }
+    public enum JournalType
+    {
+           Deposit = 1,
+           Withdrawal = 2,
+           Transfer = 3
+    }
+    public enum TransactionState
+    {
+           Cleared = 1,
+           Pending = 2,
+           Uncleared = 3     
+    }
+    public enum PricingMechanism
+    {
+           Historical = 1,
+           Market = 2     
+    }
 }

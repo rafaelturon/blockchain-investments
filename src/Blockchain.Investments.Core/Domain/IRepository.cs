@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Blockchain.Investments.Core.Model;
-using MongoDB.Bson;
 
 namespace Blockchain.Investments.Core.Repositories
 {

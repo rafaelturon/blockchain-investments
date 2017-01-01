@@ -1,12 +1,14 @@
 namespace Blockchain.Investments.Core.Model
 {
-    public class Currency : IEntity
+    public class Organization : IEntity
     {
         private string id = string.Empty;
         public string Title {get; set;}
-        public string Ticker {get;set;}
-        public CurrencyType Type {get;set;}
-        public string ImageUrl {get;set;}
+        public string Description {get;set;}
+        public string Country {get;set;}
+        public string Branch {get;set;}
+        public string AccountNumber {get;set;}
+        public BusinessType Type {get;set;}
         public string UniqueId
         {
             get
@@ -21,5 +23,12 @@ namespace Blockchain.Investments.Core.Model
                 id = value;
             }
         }
+    }
+    public enum BusinessType
+    {
+           Bank = 1,
+           Brokerage = 2,
+           Online = 3,
+           Property = 4
     }
 }

@@ -3,6 +3,7 @@
 
   "dependencies": {
     "NETStandard.Library": "1.6.0",
+    "CQRSlite": "0.11.3",
     "mongocsharpdriver": "2.4.0"
   },
 
