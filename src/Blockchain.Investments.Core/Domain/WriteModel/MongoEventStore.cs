@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blockchain.Investments.Core.Repositories;
 using CQRSlite.Events;
 
 namespace Blockchain.Investments.Core.WriteModel
@@ -10,10 +11,12 @@ namespace Blockchain.Investments.Core.WriteModel
     {
         private readonly IEventPublisher _publisher;
         private readonly Dictionary<Guid, List<IEvent>> _inMemoryDb = new Dictionary<Guid, List<IEvent>>();
-
-        public MongoEventStore(IEventPublisher publisher)
+        private readonly IRepository _repo;
+        public MongoEventStore(IEventPublisher publisher, IRepository repo)
         {
             _publisher = publisher;
+            _repo = repo;
+            _repo.Initialize("EventStore");
         }
 
         public void Save<T>(IEnumerable<IEvent> events)

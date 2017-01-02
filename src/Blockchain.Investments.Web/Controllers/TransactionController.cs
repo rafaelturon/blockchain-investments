@@ -18,7 +18,7 @@ namespace Blockchain.Investments.Api.Controllers
     {
         private readonly ILogger<TransactionController> _logger;
         private readonly AppConfig _optionsAccessor;
-        private IRepository _repo;
+        private readonly IRepository _repo;
         private readonly ICommandSender _commandSender;
         private readonly IReadModelFacade _readmodel;
 
@@ -35,7 +35,7 @@ namespace Blockchain.Investments.Api.Controllers
             _commandSender = commandSender;
             
             string conn = _optionsAccessor.MONGOLAB_URI;
-            _repo.Initialize(conn, Constants.DatabaseName, "Ledger");
+            _repo.Initialize("Ledger");
 
         }
 

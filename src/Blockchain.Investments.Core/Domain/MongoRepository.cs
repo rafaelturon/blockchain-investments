@@ -2,18 +2,24 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using Blockchain.Investments.Core.Model;
+using Microsoft.Extensions.Options;
 
 namespace Blockchain.Investments.Core.Repositories
 {
     public class MongoRepository : IRepository
     {
+        private readonly AppConfig _optionsAccessor;
         MongoClient _client;
         IMongoDatabase _db;
         string _collection;
-        public void Initialize(string connection, string database, string collection) 
+        public MongoRepository(IOptions<AppConfig> optionsAccessor) 
         {
-            _client = new MongoClient(connection);
-            _db = _client.GetDatabase(database);
+            _optionsAccessor = optionsAccessor.Value;
+            _client = new MongoClient(_optionsAccessor.MONGOLAB_URI);
+            _db = _client.GetDatabase(Constants.DatabaseName);
+        }
+        public void Initialize(string collection) 
+        {
             _collection = collection;
         }
  

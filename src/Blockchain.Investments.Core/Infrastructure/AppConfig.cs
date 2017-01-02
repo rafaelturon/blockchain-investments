@@ -1,4 +1,4 @@
-namespace Blockchain.Investments.Api
+namespace Blockchain.Investments.Core
 {
     public class AppConfig
     {

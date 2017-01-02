@@ -13,6 +13,7 @@ using CQRSlite.Events;
 using CQRSlite.Domain;
 using CQRSlite.Cache;
 using Scrutor;
+using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.Repositories;
 using Blockchain.Investments.Core.WriteModel;
 using Blockchain.Investments.Core.WriteModel.Handlers;
@@ -40,6 +41,10 @@ namespace Blockchain.Investments.Api
             // Register the IConfiguration instance which AppConfig binds against.
             services.Configure<AppConfig>(Configuration);
             
+            // Add application services
+            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<Blockchain.Investments.Core.Repositories.IRepository, MongoRepository>();
+
             #region CQRS
             services.AddMemoryCache();
             
@@ -75,11 +80,7 @@ namespace Blockchain.Investments.Api
             #endregion
 
             // Add framework services.
-            services.AddMvc();
-
-            // Add application services
-            services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<Blockchain.Investments.Core.Repositories.IRepository, MongoRepository>();
+            services.AddMvc();           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

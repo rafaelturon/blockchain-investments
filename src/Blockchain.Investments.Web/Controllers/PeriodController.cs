@@ -22,7 +22,7 @@ namespace Blockchain.Investments.Api.Controllers
             _optionsAccessor = optionsAccessor.Value;
 
             string conn = _optionsAccessor.MONGOLAB_URI;
-            _repo.Initialize(conn, Constants.DatabaseName, "Period");
+            _repo.Initialize("Period");
         }
 
         // GET api/values
