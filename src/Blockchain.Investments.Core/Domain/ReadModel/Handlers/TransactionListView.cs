@@ -12,7 +12,7 @@ namespace Blockchain.Investments.Core.ReadModel.Handlers
         public TransactionListView(IRepository repo) 
         {
             _repo = repo;
-            _repo.Initialize("EventStore");
+            _repo.Initialize("TransactionItemListDto");
         }
         public void Handle(TransactionCreated message)
         {

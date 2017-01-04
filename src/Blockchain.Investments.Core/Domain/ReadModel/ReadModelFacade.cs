@@ -12,7 +12,7 @@ namespace Blockchain.Investments.Core.ReadModel
         public ReadModelFacade(IRepository repo) 
         {
             _repo = repo;
-            _repo.Initialize("EventStore");
+            _repo.Initialize("TransactionItemListDto");
         }
         public IEnumerable<TransactionItemListDto> GetTransactionItems()
         {
