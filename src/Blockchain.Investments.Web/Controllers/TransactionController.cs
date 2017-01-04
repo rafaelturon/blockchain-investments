@@ -70,7 +70,7 @@ namespace Blockchain.Investments.Api.Controllers
             {
                 return BadRequest();
             }
-            _commandSender.Send(new AddTransaction(Guid.NewGuid(), transaction.Description));
+            _commandSender.Send(new AddTransaction(Util.NewSequentialId(), transaction.Description));
             _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Added", transaction.Id);
             return new OkResult();
         }
