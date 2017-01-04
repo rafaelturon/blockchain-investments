@@ -2,7 +2,7 @@ using System;
 
 namespace Blockchain.Investments.Core.Model
 {
-    public class Asset : IEntity
+    public class Asset : BaseEntity
     {
         private string _objectId = string.Empty;
         public string AccountId {get;set;}

@@ -3,7 +3,7 @@ using Blockchain.Investments.Core.Model;
 
 namespace Blockchain.Investments.Core.ReadModel.Dtos
 {
-    public class TransactionItemListDto : IEntity
+    public class TransactionItemListDto : BaseEntity
     {
         private string _objectId;
         public Guid TransactionId;

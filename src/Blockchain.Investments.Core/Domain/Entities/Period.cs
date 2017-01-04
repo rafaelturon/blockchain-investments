@@ -2,7 +2,7 @@ using System;
 
 namespace Blockchain.Investments.Core.Model
 {
-    public class Period : IEntity
+    public class Period : BaseEntity
     {
         private string _objectId = string.Empty;
         public string Title {get; set;}

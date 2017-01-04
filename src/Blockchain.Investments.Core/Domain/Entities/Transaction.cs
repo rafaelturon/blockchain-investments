@@ -2,7 +2,7 @@ using System;
 
 namespace Blockchain.Investments.Core.Model
 {
-    public class Transaction : IEntity
+    public class Transaction : BaseEntity
     {
         private string _objectId = string.Empty;
         public JournalType Journal {get; set;}

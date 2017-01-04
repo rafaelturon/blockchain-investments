@@ -1,6 +1,6 @@
 namespace Blockchain.Investments.Core.Model
 {
-    public class Organization : IEntity
+    public class Organization : BaseEntity
     {
         private string _objectId = string.Empty;
         public string Title {get; set;}
