@@ -4,7 +4,7 @@ namespace Blockchain.Investments.Core.Model
 {
     public class Period : IEntity
     {
-        private string id = string.Empty;
+        private string _objectId = string.Empty;
         public string Title {get; set;}
         public int Days {get;set;}
         public int Terms {get;set;}
@@ -14,14 +14,14 @@ namespace Blockchain.Investments.Core.Model
         {
             get
             {
-                if (!this.Id.ToString().Equals("000000000000000000000000"))
-                    id = this.Id.ToString();
+                if (!this.ObjectId.ToString().Equals("000000000000000000000000"))
+                    _objectId = this.ObjectId.ToString();
 
-                return id;
+                return _objectId;
             }
             set
             {
-                id = value;
+                _objectId = value;
             }
         }
     }

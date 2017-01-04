@@ -29,9 +29,9 @@ namespace Blockchain.Investments.Core.Repositories
         }
  
  
-        public T FindById<T>(string id) where T : IEntity, new()
+        public T FindById<T>(string objectId) where T : IEntity, new()
         {
-            var filter = Builders<T>.Filter.Eq(r => r.Id, new ObjectId(id));
+            var filter = Builders<T>.Filter.Eq(r => r.ObjectId, new ObjectId(objectId));
             return _db.GetCollection<T>(_collection).Find(filter).First();
         }
  
@@ -41,16 +41,16 @@ namespace Blockchain.Investments.Core.Repositories
             return p;
         }
  
-        public void Update<T>(string id, T p) where T : IEntity, new()
+        public void Update<T>(string objectId, T p) where T : IEntity, new()
         {
-            var objectId = new ObjectId(id);
-            p.Id = objectId;
-            var filter = Builders<T>.Filter.Eq(r => r.Id, objectId);
+            var currentObjectId = new ObjectId(objectId);
+            p.ObjectId = currentObjectId;
+            var filter = Builders<T>.Filter.Eq(r => r.ObjectId, currentObjectId);
             var operation = _db.GetCollection<T>(_collection).FindOneAndReplace(filter, p);
         }
-        public void Remove<T>(string id) where T : IEntity, new()
+        public void Remove<T>(string objectId) where T : IEntity, new()
         {
-            var filter = Builders<T>.Filter.Eq(r => r.Id, new ObjectId(id));
+            var filter = Builders<T>.Filter.Eq(r => r.ObjectId, new ObjectId(objectId));
             var operation = _db.GetCollection<T>(_collection).FindOneAndDelete(filter);
         }
     }

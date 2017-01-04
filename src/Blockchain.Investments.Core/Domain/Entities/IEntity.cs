@@ -6,6 +6,6 @@ namespace Blockchain.Investments.Core.Model
     public class IEntity
     {
         [BsonId]
-        public ObjectId Id { get; set; }
+        public ObjectId ObjectId { get; set; }
     }
 }

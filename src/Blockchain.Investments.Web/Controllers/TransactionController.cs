@@ -35,7 +35,7 @@ namespace Blockchain.Investments.Api.Controllers
             _commandSender = commandSender;
             
             string conn = _optionsAccessor.MONGOLAB_URI;
-            _repo.Initialize("Ledger");
+            _repo.Initialize("EventStore");
 
         }
 
@@ -53,7 +53,7 @@ namespace Blockchain.Investments.Api.Controllers
         {
             _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id.ToString());
             
-            var transaction = _readmodel.GetTransactionItems().FirstOrDefault(p => p.Id == id);
+            var transaction = _readmodel.GetTransactionItems().FirstOrDefault(p => p.TransactionId == id);
             if (transaction == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id.ToString());
