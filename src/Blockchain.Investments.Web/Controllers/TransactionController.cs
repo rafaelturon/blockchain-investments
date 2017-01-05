@@ -18,25 +18,20 @@ namespace Blockchain.Investments.Api.Controllers
     {
         private readonly ILogger<TransactionController> _logger;
         private readonly AppConfig _optionsAccessor;
-        private readonly IRepository _repo;
         private readonly ICommandSender _commandSender;
         private readonly IReadModelFacade _readmodel;
 
         public TransactionController (ILogger<TransactionController> logger,
-                                        IRepository repo,
                                         IOptions<AppConfig> optionsAccessor,
                                         ICommandSender commandSender,
                                         IReadModelFacade readmodel)
         {
             _logger = logger;
             _optionsAccessor = optionsAccessor.Value;
-            _repo = repo;
             _readmodel = readmodel;
             _commandSender = commandSender;
             
             string conn = _optionsAccessor.MONGOLAB_URI;
-            _repo.Initialize("EventStore");
-
         }
 
         // GET api/values

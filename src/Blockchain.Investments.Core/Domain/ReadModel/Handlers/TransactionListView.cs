@@ -8,17 +8,16 @@ namespace Blockchain.Investments.Core.ReadModel.Handlers
 {
 	public class TransactionListView : IEventHandler<TransactionCreated>
     {
-        private readonly IRepository _repo;
-        public TransactionListView(IRepository repo) 
+        private readonly IRepository<TransactionItemListDto> _repo;
+        public TransactionListView(IRepository<TransactionItemListDto> repo) 
         {
             _repo = repo;
-            _repo.Initialize("TransactionItemListDto");
         }
         public void Handle(TransactionCreated message)
         {
             // TODO: change inmemory storage to Mongo
             var transaction = new TransactionItemListDto(message.Id, message.Data);
-            _repo.Create<TransactionItemListDto>(transaction);
+            _repo.Create(transaction);
             InMemoryDatabase.List.Add(transaction);
         }
     }

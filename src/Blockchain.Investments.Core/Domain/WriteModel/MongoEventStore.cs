@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Blockchain.Investments.Core.ReadModel.Events;
-using Blockchain.Investments.Core.Repositories;
 using CQRSlite.Events;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace Blockchain.Investments.Core.WriteModel
 {
@@ -12,11 +12,17 @@ namespace Blockchain.Investments.Core.WriteModel
     {
         private readonly IEventPublisher _publisher;
         private readonly Dictionary<Guid, List<IEvent>> _inMemoryDb = new Dictionary<Guid, List<IEvent>>();
-        private readonly IRepository _repo;
-        public MongoEventStore(IEventPublisher publisher, IRepository repo)
+        private readonly AppConfig _optionsAccessor;
+        MongoClient _client;
+        IMongoDatabase _db;
+        string _collection;
+        public MongoEventStore(IEventPublisher publisher, IOptions<AppConfig> optionsAccessor)
         {
             _publisher = publisher;
-            _repo = repo;
+            _optionsAccessor = optionsAccessor.Value;
+            _client = new MongoClient(_optionsAccessor.MONGOLAB_URI);
+            _db = _client.GetDatabase(Constants.DatabaseName);
+            _collection = "EventStore";
         }
 
         public void Save<T>(IEnumerable<IEvent> events)
@@ -31,7 +37,7 @@ namespace Blockchain.Investments.Core.WriteModel
                     _inMemoryDb.Add(@event.Id, list);
                 }
                 list.Add(@event);
-                _repo.Create(@event);
+                 _db.GetCollection<IEvent>(_collection).InsertOne(@event);
                 _publisher.Publish(@event);
             }
         }
@@ -40,7 +46,7 @@ namespace Blockchain.Investments.Core.WriteModel
         {
             List<IEvent> events;
             _inMemoryDb.TryGetValue(aggregateId, out events);
-            var events2 = _repo.FindAllEvents();
+            var events2 = _db.GetCollection<IEvent>(_collection).Find(r => true).ToList();
             
             return events?.Where(x => x.Version > fromVersion) ?? new List<IEvent>();
         }

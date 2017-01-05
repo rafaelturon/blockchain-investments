@@ -12,17 +12,16 @@ namespace Blockchain.Investments.Api.Controllers
     public class OrganizationController : Controller
     {
         private readonly ILogger<OrganizationController> _logger;
-        private IRepository _repo;
+        private IRepository<Organization> _repo;
         private readonly AppConfig _optionsAccessor;
 
-        public OrganizationController (ILogger<OrganizationController> logger, IRepository repo, IOptions<AppConfig> optionsAccessor)
+        public OrganizationController (ILogger<OrganizationController> logger, IRepository<Organization> repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
             _repo = repo;
             _optionsAccessor = optionsAccessor.Value;
 
             string conn = _optionsAccessor.MONGOLAB_URI;
-            _repo.Initialize("Organization");
         }
 
         // GET api/values
@@ -30,7 +29,7 @@ namespace Blockchain.Investments.Api.Controllers
         public IEnumerable<Organization> Get()
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
-            return _repo.FindAll<Organization>();
+            return _repo.FindAll();
         }
 
         // GET api/values/5
@@ -39,7 +38,7 @@ namespace Blockchain.Investments.Api.Controllers
         {
             _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id);
             
-            var organization = _repo.FindById<Organization>(id);
+            var organization = _repo.FindById(id);
             if (organization == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id);
@@ -70,7 +69,7 @@ namespace Blockchain.Investments.Api.Controllers
                 return BadRequest();
             }
 
-            var currentOrganization = _repo.FindById<Organization>(organization.UniqueId);
+            var currentOrganization = _repo.FindById(organization.UniqueId);
             if (currentOrganization == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", organization.UniqueId);
@@ -86,13 +85,13 @@ namespace Blockchain.Investments.Api.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
-            var organization = _repo.FindById<Organization>(id);
+            var organization = _repo.FindById(id);
             if (organization == null)
             {
                 return NotFound();
             }
  
-            _repo.Remove<Organization>(id);
+            _repo.Remove(id);
             _logger.LogInformation(LoggingEvents.DELETE_ITEM, "Item {0} Deleted", id);
             return new OkResult();
         }

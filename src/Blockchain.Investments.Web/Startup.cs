@@ -20,6 +20,8 @@ using Blockchain.Investments.Core.WriteModel.Handlers;
 using Blockchain.Investments.Core.ReadModel;
 using MongoDB.Bson.Serialization;
 using Blockchain.Investments.Core.ReadModel.Events;
+using Blockchain.Investments.Core.Model;
+using Blockchain.Investments.Core.ReadModel.Dtos;
 
 namespace Blockchain.Investments.Api
 {
@@ -45,7 +47,13 @@ namespace Blockchain.Investments.Api
             
             // Add application services
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<Blockchain.Investments.Core.Repositories.IRepository, MongoRepository>();
+            services.AddSingleton<IRepository<TransactionItemListDto>, MongoRepository<TransactionItemListDto>>();
+            services.AddSingleton<IRepository<Account>, MongoRepository<Account>>();
+            services.AddSingleton<IRepository<Asset>, MongoRepository<Asset>>();
+            services.AddSingleton<IRepository<Currency>, MongoRepository<Currency>>();
+            services.AddSingleton<IRepository<Organization>, MongoRepository<Organization>>();
+            services.AddSingleton<IRepository<Period>, MongoRepository<Period>>();
+            services.AddSingleton<IRepository<Transaction>, MongoRepository<Transaction>>();
 
             #region CQRS
             services.AddMemoryCache();
