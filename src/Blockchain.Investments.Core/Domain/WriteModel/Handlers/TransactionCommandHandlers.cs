@@ -16,7 +16,7 @@ namespace Blockchain.Investments.Core.WriteModel.Handlers
 
         public void Handle(AddTransaction message)
         {
-            var item = new Transaction(message.Id, message.Description);
+            var item = new Transaction(message.Id, message.Data);
             _session.Add(item);
             _session.Commit();
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Blockchain.Investments.Core.Model;
 
 namespace Blockchain.Investments.Core.ReadModel.Dtos
@@ -7,7 +8,7 @@ namespace Blockchain.Investments.Core.ReadModel.Dtos
     {
         private string _objectId;
         public Guid TransactionId;
-        public string Description;
+        public Dictionary<string, object> Data;
         public string UniqueId
         {
             get
@@ -23,10 +24,10 @@ namespace Blockchain.Investments.Core.ReadModel.Dtos
             }
         }
         public TransactionItemListDto() {}
-        public TransactionItemListDto(Guid id, string description)
+        public TransactionItemListDto(Guid id, Dictionary<string, object> data)
         {
             TransactionId = id;
-            Description = description;
+            Data = data;
         }
     }
 }

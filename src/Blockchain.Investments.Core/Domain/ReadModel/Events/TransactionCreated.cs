@@ -1,5 +1,5 @@
 using System;
-using Blockchain.Investments.Core.Model;
+using System.Collections.Generic;
 using CQRSlite.Events;
 
 namespace Blockchain.Investments.Core.ReadModel.Events
@@ -7,14 +7,14 @@ namespace Blockchain.Investments.Core.ReadModel.Events
     public class TransactionCreated : IEvent 
 	{
         public TransactionCreated() {}
-        public TransactionCreated(Guid id, string description) 
+        public TransactionCreated(Guid id, Dictionary<string, object> data) 
         {
             Id = id;
-            Description = description;
+            Data = data;
         }
 
         public Guid Id { get; set; }
-        public string Description { get; set; }
+        public Dictionary<string, object> Data { get; set; }
         public int Version { get; set; }
         public DateTimeOffset TimeStamp { get; set; }
 	}

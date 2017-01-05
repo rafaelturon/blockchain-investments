@@ -66,11 +66,11 @@ namespace Blockchain.Investments.Api.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]Blockchain.Investments.Core.WriteModel.Domain.Transaction transaction)
         {
-            if (transaction == null || transaction.Description == null)
+            if (transaction == null || transaction.Data == null)
             {
                 return BadRequest();
             }
-            _commandSender.Send(new AddTransaction(Util.NewSequentialId(), transaction.Description));
+            _commandSender.Send(new AddTransaction(Util.NewSequentialId(), transaction.Data));
             _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Added", transaction.Id);
             return new OkResult();
         }
