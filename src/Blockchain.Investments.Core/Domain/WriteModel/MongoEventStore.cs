@@ -40,7 +40,7 @@ namespace Blockchain.Investments.Core.WriteModel
         {
             List<IEvent> events;
             _inMemoryDb.TryGetValue(aggregateId, out events);
-            var events2 = _repo.FindAllEvents<TransactionCreated>();
+            var events2 = _repo.FindAllEvents();
             
             return events?.Where(x => x.Version > fromVersion) ?? new List<IEvent>();
         }

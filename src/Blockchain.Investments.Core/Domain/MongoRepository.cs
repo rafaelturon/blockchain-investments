@@ -30,9 +30,9 @@ namespace Blockchain.Investments.Core.Repositories
             return _db.GetCollection<T>(_collection).Find(r => true).ToList();
         }
         
-        public IEnumerable<T> FindAllEvents<T>() where T : IEvent, new()
+        public IEnumerable<IEvent> FindAllEvents()
         {
-            return _db.GetCollection<T>("EventStore").Find(r => true).ToList();
+            return _db.GetCollection<IEvent>("EventStore").Find(r => true).ToList();
         }
  
         public T FindById<T>(string objectId) where T : BaseEntity, new()

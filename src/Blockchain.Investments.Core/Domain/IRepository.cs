@@ -8,7 +8,7 @@ namespace Blockchain.Investments.Core.Repositories
     {
         void Initialize(string collection);
         IEnumerable<T> FindAll<T>() where T : BaseEntity, new();
-        IEnumerable<T> FindAllEvents<T>() where T : IEvent, new();
+        IEnumerable<IEvent> FindAllEvents();
         T Create<T>(T item) where T : BaseEntity, new();
         void Create(IEvent item);
         void Remove<T>(string objectId) where T : BaseEntity, new();

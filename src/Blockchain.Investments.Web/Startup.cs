@@ -18,6 +18,8 @@ using Blockchain.Investments.Core.Repositories;
 using Blockchain.Investments.Core.WriteModel;
 using Blockchain.Investments.Core.WriteModel.Handlers;
 using Blockchain.Investments.Core.ReadModel;
+using MongoDB.Bson.Serialization;
+using Blockchain.Investments.Core.ReadModel.Events;
 
 namespace Blockchain.Investments.Api
 {
@@ -77,6 +79,9 @@ namespace Blockchain.Investments.Api
             var registrar = new BusRegistrar(new DependencyResolver(serviceProvider));
             registrar.Register(typeof(TransactionCommandHandlers));
             
+            //Register Mongo
+            BsonClassMap.RegisterClassMap<TransactionCreated>();
+
             #endregion
 
             // Add framework services.
