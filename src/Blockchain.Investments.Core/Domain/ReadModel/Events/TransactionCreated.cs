@@ -1,10 +1,12 @@
 using System;
+using Blockchain.Investments.Core.Model;
 using CQRSlite.Events;
 
 namespace Blockchain.Investments.Core.ReadModel.Events
 {
     public class TransactionCreated : IEvent 
 	{
+        public TransactionCreated() {}
         public TransactionCreated(Guid id, string description) 
         {
             Id = id;

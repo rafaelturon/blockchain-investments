@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blockchain.Investments.Core.ReadModel.Events;
 using Blockchain.Investments.Core.Repositories;
 using CQRSlite.Events;
 
@@ -16,7 +17,6 @@ namespace Blockchain.Investments.Core.WriteModel
         {
             _publisher = publisher;
             _repo = repo;
-            _repo.Initialize("EventStore");
         }
 
         public void Save<T>(IEnumerable<IEvent> events)
@@ -31,6 +31,7 @@ namespace Blockchain.Investments.Core.WriteModel
                     _inMemoryDb.Add(@event.Id, list);
                 }
                 list.Add(@event);
+                _repo.Create(@event);
                 _publisher.Publish(@event);
             }
         }
@@ -39,7 +40,9 @@ namespace Blockchain.Investments.Core.WriteModel
         {
             List<IEvent> events;
             _inMemoryDb.TryGetValue(aggregateId, out events);
+            var events2 = _repo.FindAllEvents<TransactionCreated>();
+            
             return events?.Where(x => x.Version > fromVersion) ?? new List<IEvent>();
         }
-    }
+    } 
 }

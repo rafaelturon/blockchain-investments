@@ -3,6 +3,8 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using Blockchain.Investments.Core.Model;
 using Microsoft.Extensions.Options;
+using CQRSlite.Events;
+using System.Linq;
 
 namespace Blockchain.Investments.Core.Repositories
 {
@@ -27,10 +29,15 @@ namespace Blockchain.Investments.Core.Repositories
         {
             return _db.GetCollection<T>(_collection).Find(r => true).ToList();
         }
- 
+        
+        public IEnumerable<T> FindAllEvents<T>() where T : IEvent, new()
+        {
+            return _db.GetCollection<T>("EventStore").Find(r => true).ToList();
+        }
  
         public T FindById<T>(string objectId) where T : BaseEntity, new()
         {
+            
             var filter = Builders<T>.Filter.Eq(r => r.ObjectId, new ObjectId(objectId));
             return _db.GetCollection<T>(_collection).Find(filter).First();
         }
@@ -39,6 +46,10 @@ namespace Blockchain.Investments.Core.Repositories
         {
             _db.GetCollection<T>(_collection).InsertOne(p);
             return p;
+        }
+        public void Create(IEvent item)
+        {
+            _db.GetCollection<IEvent>("EventStore").InsertOne(item);
         }
  
         public void Update<T>(string objectId, T p) where T : BaseEntity, new()

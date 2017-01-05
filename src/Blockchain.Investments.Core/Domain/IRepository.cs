@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Blockchain.Investments.Core.Model;
+using CQRSlite.Events;
 
 namespace Blockchain.Investments.Core.Repositories
 {
@@ -7,7 +8,9 @@ namespace Blockchain.Investments.Core.Repositories
     {
         void Initialize(string collection);
         IEnumerable<T> FindAll<T>() where T : BaseEntity, new();
+        IEnumerable<T> FindAllEvents<T>() where T : IEvent, new();
         T Create<T>(T item) where T : BaseEntity, new();
+        void Create(IEvent item);
         void Remove<T>(string objectId) where T : BaseEntity, new();
         void Update<T>(string objectId, T entity) where T : BaseEntity, new();
         T FindById<T>(string objectId) where T : BaseEntity, new();
