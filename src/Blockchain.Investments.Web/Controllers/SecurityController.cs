@@ -9,13 +9,13 @@ using Blockchain.Investments.Core.Repositories;
 namespace Blockchain.Investments.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class MarketController : Controller
+    public class SecurityController : Controller
     {
-        private readonly ILogger<MarketController> _logger;
-        private IRepository<Market> _repo;
+        private readonly ILogger<SecurityController> _logger;
+        private IRepository<Security> _repo;
         private readonly AppConfig _optionsAccessor;
 
-        public MarketController (ILogger<MarketController> logger, IRepository<Market> repo, IOptions<AppConfig> optionsAccessor)
+        public SecurityController (ILogger<SecurityController> logger, IRepository<Security> repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
             _repo = repo;
@@ -26,7 +26,7 @@ namespace Blockchain.Investments.Api.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<Market> Get()
+        public IEnumerable<Security> Get()
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
             return _repo.FindAll();
@@ -49,35 +49,35 @@ namespace Blockchain.Investments.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]Market currency)
+        public IActionResult Post([FromBody]Security security)
         {
-            if (currency == null)
+            if (security == null)
             {
                 return BadRequest();
             }
-            var createdCurrency = _repo.Create(currency);
+            var createdCurrency = _repo.Create(security);
             _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Created", createdCurrency.UniqueId);
-            return new OkObjectResult(currency);
+            return new OkObjectResult(security);
         }
 
         // PUT api/values/5
         [HttpPut]
-        public IActionResult Put([FromBody]Market market)
+        public IActionResult Put([FromBody]Security security)
         {
-            if (market == null || string.IsNullOrEmpty(market.UniqueId))
+            if (security == null || string.IsNullOrEmpty(security.UniqueId))
             {
                 return BadRequest();
             }
 
-            var currentMarket = _repo.FindById(market.UniqueId);
+            var currentMarket = _repo.FindById(security.UniqueId);
             if (currentMarket == null)
             {
-                _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", market.UniqueId);
+                _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", security.UniqueId);
                 return NotFound();
             }
             
-            _repo.Update(market.UniqueId, market);
-            _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", market.UniqueId);
+            _repo.Update(security.UniqueId, security);
+            _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", security.UniqueId);
             return new OkResult();
         }
 

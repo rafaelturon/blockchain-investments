@@ -7,8 +7,8 @@ namespace Blockchain.Investments.Core.Model
         private string _objectId = string.Empty;
         public JournalType Journal {get; set;}
         public Account Account {get; set;}
-        public Market Market {get;set;}
-        public DateTime Date {get; set;}
+        public Security Security {get;set;}
+        public DateTime EventDate {get; set;}
         public double Amount {get; set;}
         public string Description {get; set;}
         

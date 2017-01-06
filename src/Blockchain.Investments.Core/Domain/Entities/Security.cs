@@ -1,6 +1,6 @@
 namespace Blockchain.Investments.Core.Model
 {
-    public class Market : BaseEntity
+    public class Security : BaseEntity
     {
         private string _objectId = string.Empty;
         public string Title {get; set;}

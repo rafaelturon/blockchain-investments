@@ -50,7 +50,7 @@ namespace Blockchain.Investments.Api
             services.AddSingleton<IRepository<TransactionItemListDto>, MongoRepository<TransactionItemListDto>>();
             services.AddSingleton<IRepository<Account>, MongoRepository<Account>>();
             services.AddSingleton<IRepository<Asset>, MongoRepository<Asset>>();
-            services.AddSingleton<IRepository<Market>, MongoRepository<Market>>();
+            services.AddSingleton<IRepository<Security>, MongoRepository<Security>>();
             services.AddSingleton<IRepository<Organization>, MongoRepository<Organization>>();
             services.AddSingleton<IRepository<Period>, MongoRepository<Period>>();
             services.AddSingleton<IRepository<Transaction>, MongoRepository<Transaction>>();
