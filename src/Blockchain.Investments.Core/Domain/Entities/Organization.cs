@@ -8,7 +8,7 @@ namespace Blockchain.Investments.Core.Model
         public string Country {get;set;}
         public string Branch {get;set;}
         public string AccountNumber {get;set;}
-        public BusinessType Type {get;set;}
+        public CounterpartyType Type {get;set;}
         public string UniqueId
         {
             get
@@ -24,11 +24,11 @@ namespace Blockchain.Investments.Core.Model
             }
         }
     }
-    public enum BusinessType
+    public enum CounterpartyType
     {
-           Bank = 1,
-           Brokerage = 2,
-           Online = 3,
-           Property = 4
+        OwnProperty = 1,
+        Bank = 2,
+        Brokerage = 3,
+        OtherService = 4
     }
 }

@@ -6,7 +6,7 @@ namespace Blockchain.Investments.Core.Model
     {
         private string _objectId = string.Empty;
         public JournalType Journal {get; set;}
-        public Account Account {get; set;}
+        public ChartAccount Account {get; set;}
         public Security Security {get;set;}
         public DateTime EventDate {get; set;}
         public double Amount {get; set;}
@@ -15,8 +15,7 @@ namespace Blockchain.Investments.Core.Model
         public string CreatedBy {get; set;}
         
         public TransactionState State {get;set;}
-        public PricingMechanism Pricing {get;set;}
-
+        
         public string Tag {get;set;}
         public string UniqueId
         {
@@ -44,10 +43,5 @@ namespace Blockchain.Investments.Core.Model
            Cleared = 1,
            Pending = 2,
            Uncleared = 3     
-    }
-    public enum PricingMechanism
-    {
-           Historical = 1,
-           Market = 2     
     }
 }

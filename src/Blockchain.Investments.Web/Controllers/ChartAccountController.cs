@@ -9,13 +9,13 @@ using Blockchain.Investments.Core.Repositories;
 namespace Blockchain.Investments.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class AccountController : Controller
+    public class ChartAccountController : Controller
     {
-        private readonly ILogger<AccountController> _logger;
+        private readonly ILogger<ChartAccountController> _logger;
         private readonly AppConfig _optionsAccessor;
-        private IRepository<Account> _repo;
+        private IRepository<ChartAccount> _repo;
 
-        public AccountController (ILogger<AccountController> logger, IRepository<Account> repo, IOptions<AppConfig> optionsAccessor)
+        public ChartAccountController (ILogger<ChartAccountController> logger, IRepository<ChartAccount> repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
             _optionsAccessor = optionsAccessor.Value;
@@ -27,7 +27,7 @@ namespace Blockchain.Investments.Api.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<Account> Get()
+        public IEnumerable<ChartAccount> Get()
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
             return _repo.FindAll();
@@ -50,7 +50,7 @@ namespace Blockchain.Investments.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]Account account)
+        public IActionResult Post([FromBody]ChartAccount account)
         {
             if (account == null)
             {
@@ -63,7 +63,7 @@ namespace Blockchain.Investments.Api.Controllers
 
         // PUT api/values/5
         [HttpPut]
-        public IActionResult Put([FromBody]Account account)
+        public IActionResult Put([FromBody]ChartAccount account)
         {
             if (account == null || string.IsNullOrEmpty(account.UniqueId))
             {

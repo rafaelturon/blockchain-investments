@@ -8,7 +8,10 @@ namespace Blockchain.Investments.Core.Model
         public string Country {get;set;}
         public string Ticker {get;set;}
         public MarketType Type {get;set;}
+        public PricingMechanism Pricing {get;set;}
+
         public string ImageUrl {get;set;}
+        public string DetailsUrl {get;set;}
         public string UniqueId
         {
             get
@@ -26,13 +29,18 @@ namespace Blockchain.Investments.Core.Model
     }
     public enum MarketType
     {
-           Forex = 1,
-           Crypto = 2,
+           ForexCurrency = 1,
+           CryptoCurrency = 2,
            Metal = 3,
            Stock = 4,
            Bond = 5,
            ETF = 6,
            Commodity = 7,
            Indice = 8
+    }
+    public enum PricingMechanism
+    {
+           Historical = 1,
+           Market = 2     
     }
 }
