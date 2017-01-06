@@ -1,11 +1,13 @@
 namespace Blockchain.Investments.Core.Model
 {
-    public class Currency : BaseEntity
+    public class Market : BaseEntity
     {
         private string _objectId = string.Empty;
         public string Title {get; set;}
+        public string Exchange {get;set;}
+        public string Country {get;set;}
         public string Ticker {get;set;}
-        public CurrencyType Type {get;set;}
+        public MarketType Type {get;set;}
         public string ImageUrl {get;set;}
         public string UniqueId
         {
@@ -22,7 +24,7 @@ namespace Blockchain.Investments.Core.Model
             }
         }
     }
-    public enum CurrencyType
+    public enum MarketType
     {
            Forex = 1,
            Crypto = 2,
@@ -30,6 +32,7 @@ namespace Blockchain.Investments.Core.Model
            Stock = 4,
            Bond = 5,
            ETF = 6,
-           Commodity = 7
+           Commodity = 7,
+           Indice = 8
     }
 }

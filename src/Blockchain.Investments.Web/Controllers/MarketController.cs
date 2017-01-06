@@ -9,13 +9,13 @@ using Blockchain.Investments.Core.Repositories;
 namespace Blockchain.Investments.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class CurrencyController : Controller
+    public class MarketController : Controller
     {
-        private readonly ILogger<CurrencyController> _logger;
-        private IRepository<Currency> _repo;
+        private readonly ILogger<MarketController> _logger;
+        private IRepository<Market> _repo;
         private readonly AppConfig _optionsAccessor;
 
-        public CurrencyController (ILogger<CurrencyController> logger, IRepository<Currency> repo, IOptions<AppConfig> optionsAccessor)
+        public MarketController (ILogger<MarketController> logger, IRepository<Market> repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
             _repo = repo;
@@ -26,7 +26,7 @@ namespace Blockchain.Investments.Api.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<Currency> Get()
+        public IEnumerable<Market> Get()
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
             return _repo.FindAll();
@@ -49,7 +49,7 @@ namespace Blockchain.Investments.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]Currency currency)
+        public IActionResult Post([FromBody]Market currency)
         {
             if (currency == null)
             {
@@ -62,22 +62,22 @@ namespace Blockchain.Investments.Api.Controllers
 
         // PUT api/values/5
         [HttpPut]
-        public IActionResult Put([FromBody]Currency currency)
+        public IActionResult Put([FromBody]Market market)
         {
-            if (currency == null || string.IsNullOrEmpty(currency.UniqueId))
+            if (market == null || string.IsNullOrEmpty(market.UniqueId))
             {
                 return BadRequest();
             }
 
-            var currentCurrency = _repo.FindById(currency.UniqueId);
-            if (currentCurrency == null)
+            var currentMarket = _repo.FindById(market.UniqueId);
+            if (currentMarket == null)
             {
-                _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", currency.UniqueId);
+                _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", market.UniqueId);
                 return NotFound();
             }
             
-            _repo.Update(currency.UniqueId, currency);
-            _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", currency.UniqueId);
+            _repo.Update(market.UniqueId, market);
+            _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", market.UniqueId);
             return new OkResult();
         }
 
