@@ -49,7 +49,7 @@ namespace Blockchain.Investments.Api
             services.AddSingleton<IRepository<TransactionItemListDto>, MongoRepository<TransactionItemListDto>>();
             services.AddSingleton<IRepository<Account>, MongoRepository<Account>>();
             services.AddSingleton<IRepository<Security>, MongoRepository<Security>>();
-            services.AddSingleton<IRepository<Organization>, MongoRepository<Organization>>();
+            services.AddSingleton<IRepository<ChartOfAccount>, MongoRepository<ChartOfAccount>>();
             services.AddSingleton<IRepository<Period>, MongoRepository<Period>>();
 
             #region CQRS

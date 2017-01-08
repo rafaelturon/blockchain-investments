@@ -4,7 +4,7 @@ namespace Blockchain.Investments.Core.Model
     {
         public JournalType Journal {get; set;}
         public string AccountId {get; set;}
-        public string SecurityId {get;set;}
+        public string Tag {get;set;}
         public double Amount {get; set;}
     }
     public enum JournalType
