@@ -1,6 +1,6 @@
 namespace Blockchain.Investments.Core.Model
 {
-    public class ChartAccount : BaseEntity
+    public class Account : BaseEntity
     {
         private string _objectId = string.Empty;
         public int Level {get;set;}
