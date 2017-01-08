@@ -8,7 +8,8 @@ namespace Blockchain.Investments.Core.ReadModel.Dtos
     {
         private string _objectId;
         public Guid TransactionId;
-        public Dictionary<string, object> Data;
+        public string UserId;
+        public JournalEntry JournalEntry;
         public string UniqueId
         {
             get
@@ -24,10 +25,11 @@ namespace Blockchain.Investments.Core.ReadModel.Dtos
             }
         }
         public TransactionItemListDto() {}
-        public TransactionItemListDto(Guid id, Dictionary<string, object> data)
+        public TransactionItemListDto(Guid id, string userId, JournalEntry journalEntry)
         {
             TransactionId = id;
-            Data = data;
+            UserId = userId;
+            JournalEntry = journalEntry;
         }
     }
 }

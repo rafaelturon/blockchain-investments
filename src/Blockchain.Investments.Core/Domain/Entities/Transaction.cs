@@ -8,15 +8,7 @@ namespace Blockchain.Investments.Core.Model
         public JournalType Journal {get; set;}
         public ChartAccount Account {get; set;}
         public Security Security {get;set;}
-        public DateTime EventDate {get; set;}
         public double Amount {get; set;}
-        public string Description {get; set;}
-        
-        public string CreatedBy {get; set;}
-        
-        public TransactionState State {get;set;}
-        
-        public string Tag {get;set;}
         public string UniqueId
         {
             get
@@ -37,11 +29,5 @@ namespace Blockchain.Investments.Core.Model
            Deposit = 1,
            Withdrawal = 2,
            Transfer = 3
-    }
-    public enum TransactionState
-    {
-           Cleared = 1,
-           Pending = 2,
-           Uncleared = 3     
     }
 }

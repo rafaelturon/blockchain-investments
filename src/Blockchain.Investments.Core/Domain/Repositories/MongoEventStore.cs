@@ -5,7 +5,7 @@ using CQRSlite.Events;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace Blockchain.Investments.Core.WriteModel
+namespace Blockchain.Investments.Core.Repositories
 {
     // TODO: change inmemory storage to Mongo
     public class MongoEventStore : IEventStore
@@ -22,7 +22,7 @@ namespace Blockchain.Investments.Core.WriteModel
             _optionsAccessor = optionsAccessor.Value;
             _client = new MongoClient(_optionsAccessor.MONGOLAB_URI);
             _db = _client.GetDatabase(Constants.DatabaseName);
-            _collection = "EventStore";
+            _collection = Constants.EventStoreCollectionName;
         }
 
         public void Save<T>(IEnumerable<IEvent> events)

@@ -15,7 +15,6 @@ using CQRSlite.Cache;
 using Scrutor;
 using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.Repositories;
-using Blockchain.Investments.Core.WriteModel;
 using Blockchain.Investments.Core.WriteModel.Handlers;
 using Blockchain.Investments.Core.ReadModel;
 using MongoDB.Bson.Serialization;
@@ -70,7 +69,7 @@ namespace Blockchain.Investments.Api
             
             //Scan for commandhandlers and eventhandlers
             services.Scan(scan => scan
-                .FromAssemblies(typeof(TransactionCommandHandlers).GetTypeInfo().Assembly)
+                .FromAssemblies(typeof(AccountTransactionCommandHandlers).GetTypeInfo().Assembly)
                     .AddClasses(classes => classes.Where(x => {
                         var allInterfaces = x.GetInterfaces();
                         return 
@@ -84,7 +83,7 @@ namespace Blockchain.Investments.Api
             //Register bus
             var serviceProvider = services.BuildServiceProvider();
             var registrar = new BusRegistrar(new DependencyResolver(serviceProvider));
-            registrar.Register(typeof(TransactionCommandHandlers));
+            registrar.Register(typeof(AccountTransactionCommandHandlers));
             
             //Register Mongo
             BsonClassMap.RegisterClassMap<TransactionCreated>();

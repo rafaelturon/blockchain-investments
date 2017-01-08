@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.ReadModel;
 using Blockchain.Investments.Core.ReadModel.Dtos;
-using Blockchain.Investments.Core.Repositories;
 using Blockchain.Investments.Core.WriteModel.Commands;
 using CQRSlite.Commands;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Blockchain.Investments.Core.Domain;
+using Blockchain.Investments.Core.Model;
 
 namespace Blockchain.Investments.Api.Controllers
 {
@@ -40,6 +41,37 @@ namespace Blockchain.Investments.Api.Controllers
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
             return _readmodel.GetTransactionItems();
+
+            // List<TransactionItemListDto> dto = new List<TransactionItemListDto>();
+            // Guid journalEntryId = Util.NewSequentialId();
+            // string userId = "12345";
+            // JournalEntry entry = new JournalEntry();
+            // entry.EventDate = System.DateTime.Now;
+            // entry.CreditTo =  new Transaction();
+            // entry.CreditTo.Account = new ChartAccount();
+            // entry.CreditTo.Account.AccountType = AccountType.Asset;
+            // entry.CreditTo.Amount = 100;
+            // entry.CreditTo.Journal = JournalType.Withdrawal;
+            // entry.CreditTo.Security = new Security();
+            // entry.CreditTo.Security.Country = "BR";
+            // entry.CreditTo.Security.Description = "Bradesco";
+            // entry.CreditTo.Security.Pricing = PricingMechanism.Historical;
+            // entry.CreditTo.Security.Ticker = "BRL";
+            // entry.CreditTo.Security.Type = MarketType.ForexCurrency;
+            // entry.DebtFrom =  new Transaction();
+            // entry.DebtFrom.Account = new ChartAccount();
+            // entry.DebtFrom.Account.AccountType = AccountType.Asset;
+            // entry.DebtFrom.Amount = 100;
+            // entry.DebtFrom.Journal = JournalType.Deposit;
+            // entry.DebtFrom.Security = new Security();
+            // entry.DebtFrom.Security.Country = "BR";
+            // entry.DebtFrom.Security.Description = "Santander";
+            // entry.DebtFrom.Security.Pricing = PricingMechanism.Historical;
+            // entry.DebtFrom.Security.Ticker = "BRL";
+            // entry.DebtFrom.Security.Type = MarketType.ForexCurrency;
+            // TransactionItemListDto item = new TransactionItemListDto(journalEntryId, userId, entry);
+            // dto.Add(item);
+            // return dto;
         }
 
         // GET api/values/5
@@ -59,14 +91,17 @@ namespace Blockchain.Investments.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]Blockchain.Investments.Core.WriteModel.Domain.Transaction transaction)
+        public IActionResult Post([FromBody]JournalEntry journalEntry)
         {
-            if (transaction == null || transaction.Data == null)
+            string userId = "";
+            if (journalEntry == null || journalEntry.EventDate == null ||
+                 journalEntry.DebtFrom == null || journalEntry.CreditTo == null)
             {
                 return BadRequest();
             }
-            _commandSender.Send(new AddTransaction(Util.NewSequentialId(), transaction.Data));
-            _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Added", transaction.Id);
+            Guid journalEntryId = Util.NewSequentialId();
+            _commandSender.Send(new AddJournalEntry(journalEntryId, userId, journalEntry));
+            _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Added", journalEntryId);
             return new OkResult();
         }
     }
