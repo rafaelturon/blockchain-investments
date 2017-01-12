@@ -17,11 +17,11 @@ using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.Repositories;
 using Blockchain.Investments.Core.WriteModel.Handlers;
 using Blockchain.Investments.Core.ReadModel;
-using MongoDB.Bson.Serialization;
 using Blockchain.Investments.Core.ReadModel.Events;
 using Blockchain.Investments.Core.Model;
 using Blockchain.Investments.Core.ReadModel.Dtos;
 using MongoDB.Driver;
+using MongoDB.Bson.Serialization;
 
 namespace Blockchain.Investments.Api
 {
