@@ -67,7 +67,8 @@ namespace Blockchain.Investments.Api.Controllers
             {
                 return BadRequest();
             }
-            Guid journalEntryId = Util.NewSequentialId();
+            //Guid journalEntryId = Util.NewSequentialId();
+            Guid journalEntryId = new Guid("41c0756d-2c91-93c5-64c0-a08d590160b4");
             _commandSender.Send(new AddJournalEntry(journalEntryId, userId, journalEntry));
             _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Added", journalEntryId);
             return new OkResult();

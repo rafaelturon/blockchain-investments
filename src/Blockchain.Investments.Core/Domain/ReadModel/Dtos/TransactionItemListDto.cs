@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Blockchain.Investments.Core.Model;
 
 namespace Blockchain.Investments.Core.ReadModel.Dtos

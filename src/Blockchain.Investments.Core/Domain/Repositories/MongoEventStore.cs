@@ -11,7 +11,6 @@ namespace Blockchain.Investments.Core.Repositories
     public class MongoEventStore : IEventStore
     {
         private readonly IEventPublisher _publisher;
-        private readonly Dictionary<Guid, List<IEvent>> _inMemoryDb = new Dictionary<Guid, List<IEvent>>();
         private readonly AppConfig _optionsAccessor;
         MongoClient _client;
         IMongoDatabase _db;
@@ -29,14 +28,6 @@ namespace Blockchain.Investments.Core.Repositories
         {
             foreach (var @event in events)
             {
-                List<IEvent> list;
-                _inMemoryDb.TryGetValue(@event.Id, out list);
-                if (list == null)
-                {
-                    list = new List<IEvent>();
-                    _inMemoryDb.Add(@event.Id, list);
-                }
-                list.Add(@event);
                  _db.GetCollection<IEvent>(_collection).InsertOne(@event);
                 _publisher.Publish(@event);
             }
@@ -44,9 +35,8 @@ namespace Blockchain.Investments.Core.Repositories
 
         public IEnumerable<IEvent> Get<T>(Guid aggregateId, int fromVersion)
         {
-            List<IEvent> events;
-            _inMemoryDb.TryGetValue(aggregateId, out events);
-            var events2 = _db.GetCollection<IEvent>(_collection).Find(r => true).ToList();
+            var filter = Builders<IEvent>.Filter.Eq("AggregateId", aggregateId);
+            var events = _db.GetCollection<IEvent>(_collection).Find(filter).ToEnumerable();
             
             return events?.Where(x => x.Version > fromVersion) ?? new List<IEvent>();
         }

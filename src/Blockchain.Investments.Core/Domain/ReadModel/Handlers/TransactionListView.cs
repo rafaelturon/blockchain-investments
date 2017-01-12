@@ -14,10 +14,8 @@ namespace Blockchain.Investments.Core.ReadModel.Handlers
         }
         public void Handle(TransactionCreated message)
         {
-            // TODO: change inmemory storage to Mongo
             var transaction = new TransactionItemListDto(message.Id, message.UserId, message.JournalEntry);
             _repo.Create(transaction);
-            InMemoryDatabase.List.Add(transaction);
         }
     }
 }

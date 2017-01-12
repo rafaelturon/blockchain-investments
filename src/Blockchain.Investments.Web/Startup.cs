@@ -21,6 +21,7 @@ using MongoDB.Bson.Serialization;
 using Blockchain.Investments.Core.ReadModel.Events;
 using Blockchain.Investments.Core.Model;
 using Blockchain.Investments.Core.ReadModel.Dtos;
+using MongoDB.Driver;
 
 namespace Blockchain.Investments.Api
 {
@@ -63,7 +64,8 @@ namespace Blockchain.Investments.Api
             services.AddScoped<ISession, Session>();
             services.AddSingleton<IEventStore, MongoEventStore>();
             services.AddScoped<ICache, CQRSlite.Cache.MemoryCache>();
-            services.AddScoped<CQRSlite.Domain.IRepository>(y => new CacheRepository(new Repository(y.GetService<IEventStore>()), y.GetService<IEventStore>(), y.GetService<ICache>()));
+            services.AddScoped<IRepository>(y => new CQRSlite.Cache.CacheRepository(new Repository(y.GetService<IEventStore>()), y.GetService<IEventStore>(), y.GetService<ICache>()));
+            
             services.AddTransient<IReadModelFacade, ReadModelFacade>();
             
             //Scan for commandhandlers and eventhandlers
@@ -85,7 +87,12 @@ namespace Blockchain.Investments.Api
             registrar.Register(typeof(AccountTransactionCommandHandlers));
             
             //Register Mongo
-            BsonClassMap.RegisterClassMap<TransactionCreated>();
+            MongoDefaults.GuidRepresentation = MongoDB.Bson.GuidRepresentation.Standard;
+            BsonClassMap.RegisterClassMap<TransactionCreated>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetIdMember(cm.GetMemberMap(c => c.ObjectId));
+            });
 
             #endregion
 
