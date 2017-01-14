@@ -6,7 +6,7 @@ namespace Blockchain.Investments.Core.ReadModel.Dtos
     public class TransactionItemListDto : BaseEntity
     {
         private string _objectId;
-        public Guid TransactionId;
+        public Guid AggregateId;
         public string UserId;
         public JournalEntry JournalEntry;
         public string UniqueId
@@ -26,7 +26,7 @@ namespace Blockchain.Investments.Core.ReadModel.Dtos
         public TransactionItemListDto() {}
         public TransactionItemListDto(Guid id, string userId, JournalEntry journalEntry)
         {
-            TransactionId = id;
+            AggregateId = id;
             UserId = userId;
             JournalEntry = journalEntry;
         }

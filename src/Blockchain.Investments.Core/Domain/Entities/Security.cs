@@ -5,13 +5,16 @@ namespace Blockchain.Investments.Core.Model
         private string _objectId = string.Empty;
         public string Title {get; set;}
         public string Ticker {get;set;}
+        public string Code {get;set;}
+        public int Fraction {get;set;}
         public MarketType Type {get;set;}
         public PricingMechanism Pricing {get;set;}
         
         public string ImageUrl {get;set;}
         public string DetailsUrl {get;set;}
         public string Description {get; set;}
-        
+        public string Namespace {get;set;}
+        public string QuoteSource {get;set;}
         public string UniqueId
         {
             get

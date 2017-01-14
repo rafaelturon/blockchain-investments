@@ -9,13 +9,13 @@ using Blockchain.Investments.Core.Repositories;
 namespace Blockchain.Investments.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class ChartOfAccountController : Controller
+    public class PriceController : Controller
     {
-        private readonly ILogger<ChartOfAccountController> _logger;
-        private IRepository<ChartOfAccount> _repo;
+        private readonly ILogger<PriceController> _logger;
+        private IRepository<Price> _repo;
         private readonly AppConfig _optionsAccessor;
 
-        public ChartOfAccountController (ILogger<ChartOfAccountController> logger, IRepository<ChartOfAccount> repo, IOptions<AppConfig> optionsAccessor)
+        public PriceController (ILogger<PriceController> logger, IRepository<Price> repo, IOptions<AppConfig> optionsAccessor)
         {
             _logger = logger;
             _repo = repo;
@@ -26,7 +26,7 @@ namespace Blockchain.Investments.Api.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<ChartOfAccount> Get()
+        public IEnumerable<Price> Get()
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
             return _repo.FindAll();
@@ -38,46 +38,46 @@ namespace Blockchain.Investments.Api.Controllers
         {
             _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id);
             
-            var chartOfAccount = _repo.FindById(id);
-            if (chartOfAccount == null)
+            var price = _repo.FindById(id);
+            if (price == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id);
                 return NotFound();
             }
-            return new ObjectResult(chartOfAccount);
+            return new ObjectResult(price);
         }
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]ChartOfAccount chartOfAccount)
+        public IActionResult Post([FromBody]Price price)
         {
-            if (chartOfAccount == null)
+            if (price == null)
             {
                 return BadRequest();
             }
-            var createdOrganization = _repo.Create(chartOfAccount);
-            _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Created", createdOrganization.UniqueId);
-            return new OkObjectResult(chartOfAccount);
+            var newPrice = _repo.Create(price);
+            _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Created", newPrice.UniqueId);
+            return new OkObjectResult(price);
         }
 
         // PUT api/values/5
         [HttpPut]
-        public IActionResult Put([FromBody]ChartOfAccount chartOfAccount)
+        public IActionResult Put([FromBody]Price price)
         {
-            if (chartOfAccount == null || string.IsNullOrEmpty(chartOfAccount.UniqueId))
+            if (price == null || string.IsNullOrEmpty(price.UniqueId))
             {
                 return BadRequest();
             }
 
-            var currentOrganization = _repo.FindById(chartOfAccount.UniqueId);
-            if (currentOrganization == null)
+            var currentPrice = _repo.FindById(price.UniqueId);
+            if (currentPrice == null)
             {
-                _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", chartOfAccount.UniqueId);
+                _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", price.UniqueId);
                 return NotFound();
             }
             
-            _repo.Update(chartOfAccount.UniqueId, chartOfAccount);
-            _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", chartOfAccount.UniqueId);
+            _repo.Update(price.UniqueId, price);
+            _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", price.UniqueId);
             return new OkResult();
         }
 
@@ -85,8 +85,8 @@ namespace Blockchain.Investments.Api.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
-            var chartOfAccount = _repo.FindById(id);
-            if (chartOfAccount == null)
+            var price = _repo.FindById(id);
+            if (price == null)
             {
                 return NotFound();
             }

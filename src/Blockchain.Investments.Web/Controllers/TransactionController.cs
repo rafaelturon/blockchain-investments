@@ -48,7 +48,7 @@ namespace Blockchain.Investments.Api.Controllers
         {
             _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id.ToString());
             
-            var transaction = _readmodel.GetTransactionItems().FirstOrDefault(p => p.TransactionId == id);
+            var transaction = _readmodel.GetTransactionItems().FirstOrDefault(p => p.AggregateId == id);
             if (transaction == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id.ToString());

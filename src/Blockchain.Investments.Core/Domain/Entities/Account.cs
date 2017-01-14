@@ -5,12 +5,12 @@ namespace Blockchain.Investments.Core.Model
         private string _objectId = string.Empty;
         public string Title {get; set;}
         public string Description {get;set;}
-        public string Country {get;set;}
-        public string Branch {get;set;}
-        public string AccountNumber {get;set;}
-        public CounterpartyType Type {get;set;}
+        public string Notes {get;set;}
+        public string Code {get;set;}
+        public AccountType Type {get;set;}
+        public CounterpartyType CounterpartyType {get;set;}
         public string SecurityId {get; set;}
-        public string ChartOfAccountId {get;set;}
+        public string ParentAccountId {get;set;}
         public string UniqueId
         {
             get
@@ -25,6 +25,14 @@ namespace Blockchain.Investments.Core.Model
                 _objectId = value;
             }
         }
+    }
+    public enum AccountType
+    {
+           Asset = 1,
+           Liability = 2,
+           Equity = 3,
+           Revenue = 4,
+           Expense = 5
     }
     public enum CounterpartyType
     {
