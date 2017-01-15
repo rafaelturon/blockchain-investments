@@ -2,7 +2,6 @@ namespace Blockchain.Investments.Core.Model
 {
     public class Security : BaseEntity
     {
-        private string _objectId = string.Empty;
         public string Title {get; set;}
         public string Ticker {get;set;}
         public string Code {get;set;}
@@ -15,20 +14,6 @@ namespace Blockchain.Investments.Core.Model
         public string Description {get; set;}
         public string Namespace {get;set;}
         public string QuoteSource {get;set;}
-        public string UniqueId
-        {
-            get
-            {
-                if (!this.ObjectId.ToString().Equals("000000000000000000000000"))
-                    _objectId = this.ObjectId.ToString();
-
-                return _objectId;
-            }
-            set
-            {
-                _objectId = value;
-            }
-        }
     }
     public enum MarketType
     {

@@ -3,7 +3,7 @@ namespace Blockchain.Investments.Core.Model
     public class Transaction
     {
         public JournalType Journal {get; set;}
-        public Security Account {get; set;}
+        public Account Account {get; set;}
         public string Tag {get;set;}
         public double Value {get; set;}
         public double Quantity {get;set;}
