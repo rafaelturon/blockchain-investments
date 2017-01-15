@@ -9,7 +9,7 @@ namespace Blockchain.Investments.Core.Model
         public string Code {get;set;}
         public AccountType Type {get;set;}
         public CounterpartyType CounterpartyType {get;set;}
-        public string SecurityId {get; set;}
+        public Security Security {get; set;}
         public string ParentAccountId {get;set;}
         public string UniqueId
         {

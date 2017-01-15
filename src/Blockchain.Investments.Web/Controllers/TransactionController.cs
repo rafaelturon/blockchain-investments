@@ -63,7 +63,7 @@ namespace Blockchain.Investments.Api.Controllers
         {
             string userId = "12345";
             if (journalEntry == null || journalEntry.EventDate == null ||
-                 journalEntry.DebtFrom == null || journalEntry.CreditTo == null)
+                 journalEntry.Splits == null || journalEntry.Splits.Count < 2)
             {
                 return BadRequest();
             }

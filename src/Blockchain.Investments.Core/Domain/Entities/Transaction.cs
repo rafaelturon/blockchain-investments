@@ -3,14 +3,15 @@ namespace Blockchain.Investments.Core.Model
     public class Transaction
     {
         public JournalType Journal {get; set;}
-        public string AccountId {get; set;}
+        public Security Account {get; set;}
         public string Tag {get;set;}
-        public double Amount {get; set;}
+        public double Value {get; set;}
+        public double Quantity {get;set;}
+        public string LotId {get;set;}
     }
     public enum JournalType
     {
-           Deposit = 1,
-           Withdrawal = 2,
-           Transfer = 3
+           Debit = 1,
+           Credit = 2
     }
 }

@@ -2,14 +2,11 @@ using System;
 
 namespace Blockchain.Investments.Core.Model
 {
-    public class Price : BaseEntity
+    public class Lot : BaseEntity
     {
         private string _objectId = string.Empty;
-        public Security Security {get; set;}
-        public DateTime Modified {get;set;}
-        public string Source {get;set;}
-        public PricingType Type {get;set;}
-        public double Value {get;set;}
+        public Account Account {get; set;}
+        public bool IsClosed {get; set;}
         public string UniqueId
         {
             get
@@ -24,12 +21,5 @@ namespace Blockchain.Investments.Core.Model
                 _objectId = value;
             }
         }
-    }
-    public enum PricingType 
-    {
-        Bid = 1,
-        Ask = 2,
-        Last = 3,
-        NetAssetValue = 4
     }
 }
