@@ -4,14 +4,14 @@ using CQRSlite.Commands;
 
 namespace Blockchain.Investments.Core.WriteModel.Commands
 {
-    public class AddJournalEntry : ICommand 
+    public class CreateJournal : ICommand 
 	{
-        public AddJournalEntry(Guid id, string userId, JournalEntry journalEntry)
+        public CreateJournal(Guid id, string userId, JournalEntry journalEntry)
         {
             Id = id;
             UserId = userId;
             JournalEntry = journalEntry;
-            ExpectedVersion = journalEntry.Version;
+            ExpectedVersion = 0;
         }
 
         public Guid Id { get; set; }

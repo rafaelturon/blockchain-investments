@@ -13,7 +13,6 @@
     }
   },
   "buildOptions": {
-    "preserveCompilationContext": true,
     "debugType": "portable"
   },
   "tooling": {

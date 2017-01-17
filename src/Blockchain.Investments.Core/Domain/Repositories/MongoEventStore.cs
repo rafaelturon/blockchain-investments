@@ -35,7 +35,7 @@ namespace Blockchain.Investments.Core.Repositories
 
         public IEnumerable<IEvent> Get<T>(Guid aggregateId, int fromVersion)
         {
-            var filter = Builders<IEvent>.Filter.Eq("AggregateId", aggregateId);
+            var filter = Builders<IEvent>.Filter.Eq("AggregateId", aggregateId.ToString());
             var events = _db.GetCollection<IEvent>(_collection).Find(filter).ToEnumerable();
             
             return events?.Where(x => x.Version > fromVersion) ?? new List<IEvent>();

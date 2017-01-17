@@ -5,6 +5,7 @@ namespace Blockchain.Investments.Core.Model
     public class Price : BaseEntity
     {
         public Security Security {get; set;}
+        public Security Currency {get;set;}
         public DateTime Modified {get;set;}
         public string Source {get;set;}
         public PricingType Type {get;set;}
