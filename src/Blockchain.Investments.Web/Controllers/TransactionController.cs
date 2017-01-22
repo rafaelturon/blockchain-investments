@@ -32,7 +32,7 @@ namespace Blockchain.Investments.Api.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<TransactionItemListDto> Get()
+        public IEnumerable<BookDto> Get()
         {
             _logger.LogInformation(LoggingEvents.LIST_ITEMS, "Listing all items");
             return _readmodel.GetTransactionItems();

@@ -6,12 +6,12 @@ namespace Blockchain.Investments.Core.ReadModel
 {
     public class ReadModelFacade : IReadModelFacade
     {
-        private readonly IRepository<TransactionItemListDto> _repo;
-        public ReadModelFacade(IRepository<TransactionItemListDto> repo) 
+        private readonly IRepository<BookDto> _repo;
+        public ReadModelFacade(IRepository<BookDto> repo) 
         {
             _repo = repo;
         }
-        public IEnumerable<TransactionItemListDto> GetTransactionItems()
+        public IEnumerable<BookDto> GetTransactionItems()
         {
             return _repo.FindAll();
         }

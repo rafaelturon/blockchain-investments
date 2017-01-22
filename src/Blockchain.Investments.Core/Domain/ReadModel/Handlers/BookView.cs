@@ -5,16 +5,16 @@ using CQRSlite.Events;
 
 namespace Blockchain.Investments.Core.ReadModel.Handlers
 {
-	public class TransactionListView : IEventHandler<TransactionCreated>
+	public class BookView : IEventHandler<TransactionCreated>
     {
-        private readonly IRepository<TransactionItemListDto> _repo;
-        public TransactionListView(IRepository<TransactionItemListDto> repo) 
+        private readonly IRepository<BookDto> _repo;
+        public BookView(IRepository<BookDto> repo) 
         {
             _repo = repo;
         }
         public void Handle(TransactionCreated message)
         {
-            var transaction = new TransactionItemListDto(message.Id, message.UserId, message.JournalEntry);
+            var transaction = new BookDto(message.Id, message.UserId, message.JournalEntry);
             _repo.Create(transaction);
         }
     }

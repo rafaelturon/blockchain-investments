@@ -13,7 +13,6 @@ using CQRSlite.Events;
 using CQRSlite.Domain;
 using CQRSlite.Cache;
 using Scrutor;
-using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.Infrastructure;
 using Blockchain.Investments.Core.Repositories;
 using Blockchain.Investments.Core.WriteModel.Handlers;
@@ -51,7 +50,7 @@ namespace Blockchain.Investments.Api
             
             // Add application services
             services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(Configuration);
-            services.AddSingleton<IRepository<TransactionItemListDto>, MongoRepository<TransactionItemListDto>>();
+            services.AddSingleton<IRepository<BookDto>, MongoRepository<BookDto>>();
             services.AddSingleton<IRepository<AccountDto>, MongoRepository<AccountDto>>();
             services.AddSingleton<IRepository<Security>, MongoRepository<Security>>();
             services.AddSingleton<IRepository<Price>, MongoRepository<Price>>();
@@ -74,7 +73,7 @@ namespace Blockchain.Investments.Api
             
             //Scan for commandhandlers and eventhandlers
             services.Scan(scan => scan
-                .FromAssemblies(typeof(AccountTransactionCommandHandlers).GetTypeInfo().Assembly)
+                .FromAssemblies(typeof(BookCommandHandlers).GetTypeInfo().Assembly)
                     .AddClasses(classes => classes.Where(x => {
                         var allInterfaces = x.GetInterfaces();
                         return 
@@ -88,7 +87,7 @@ namespace Blockchain.Investments.Api
             //Register bus
             var serviceProvider = services.BuildServiceProvider();
             var registrar = new BusRegistrar(new DependencyResolver(serviceProvider));
-            registrar.Register(typeof(AccountTransactionCommandHandlers));
+            registrar.Register(typeof(BookCommandHandlers));
             
             //Register Mongo
             MongoDefaults.GuidRepresentation = MongoDB.Bson.GuidRepresentation.Standard;

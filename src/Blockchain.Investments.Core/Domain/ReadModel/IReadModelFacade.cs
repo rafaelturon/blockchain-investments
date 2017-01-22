@@ -5,6 +5,6 @@ namespace Blockchain.Investments.Core.ReadModel
 {
     public interface IReadModelFacade
     {
-        IEnumerable<TransactionItemListDto> GetTransactionItems();
+        IEnumerable<BookDto> GetTransactionItems();
     }
 }
