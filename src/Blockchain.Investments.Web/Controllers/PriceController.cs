@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft​.Extensions​.Options;
 using Blockchain.Investments.Core;
-using Blockchain.Investments.Core.Model;
+using Blockchain.Investments.Core.Infrastructure;
+using Blockchain.Investments.Core.Domain;
 using Blockchain.Investments.Core.Repositories;
 
 namespace Blockchain.Investments.Api.Controllers
@@ -13,15 +14,11 @@ namespace Blockchain.Investments.Api.Controllers
     {
         private readonly ILogger<PriceController> _logger;
         private IRepository<Price> _repo;
-        private readonly AppConfig _optionsAccessor;
 
-        public PriceController (ILogger<PriceController> logger, IRepository<Price> repo, IOptions<AppConfig> optionsAccessor)
+        public PriceController (ILogger<PriceController> logger, IRepository<Price> repo)
         {
             _logger = logger;
             _repo = repo;
-            _optionsAccessor = optionsAccessor.Value;
-
-            string conn = _optionsAccessor.MONGOLAB_URI;
         }
 
         // GET api/values

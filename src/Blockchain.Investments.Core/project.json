@@ -4,7 +4,8 @@
   "dependencies": {
     "NETStandard.Library": "1.6.0",
     "CQRSlite": "0.11.3",
-    "mongocsharpdriver": "2.4.0"
+    "mongocsharpdriver": "2.4.0",
+    "AutoMapper.Extensions.Microsoft.DependencyInjection": "1.2.0"
   },
 
   "frameworks": {

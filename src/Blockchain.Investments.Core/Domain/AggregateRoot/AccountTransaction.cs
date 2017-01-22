@@ -1,5 +1,4 @@
 using System;
-using Blockchain.Investments.Core.Model;
 using Blockchain.Investments.Core.ReadModel.Events;
 using CQRSlite.Domain;
 

@@ -14,14 +14,18 @@ using CQRSlite.Domain;
 using CQRSlite.Cache;
 using Scrutor;
 using Blockchain.Investments.Core;
+using Blockchain.Investments.Core.Infrastructure;
 using Blockchain.Investments.Core.Repositories;
 using Blockchain.Investments.Core.WriteModel.Handlers;
 using Blockchain.Investments.Core.ReadModel;
 using Blockchain.Investments.Core.ReadModel.Events;
-using Blockchain.Investments.Core.Model;
+using Blockchain.Investments.Core.Domain;
 using Blockchain.Investments.Core.ReadModel.Dtos;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization;
+using AutoMapper;
+using FluentValidation.AspNetCore;
+using Blockchain.Investments.Api.Requests;
 
 namespace Blockchain.Investments.Api
 {
@@ -46,9 +50,9 @@ namespace Blockchain.Investments.Api
             services.Configure<AppConfig>(Configuration);
             
             // Add application services
-            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(Configuration);
             services.AddSingleton<IRepository<TransactionItemListDto>, MongoRepository<TransactionItemListDto>>();
-            services.AddSingleton<IRepository<Account>, MongoRepository<Account>>();
+            services.AddSingleton<IRepository<AccountDto>, MongoRepository<AccountDto>>();
             services.AddSingleton<IRepository<Security>, MongoRepository<Security>>();
             services.AddSingleton<IRepository<Price>, MongoRepository<Price>>();
             services.AddSingleton<IRepository<Period>, MongoRepository<Period>>();
@@ -93,11 +97,23 @@ namespace Blockchain.Investments.Api
                 cm.AutoMap();
                 cm.SetIdMember(cm.GetMemberMap(c => c.ObjectId));
             });
-
+            BsonClassMap.RegisterClassMap<AccountCreated>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetIdMember(cm.GetMemberMap(c => c.ObjectId));
+            });
             #endregion
 
+            // AutoMapper
+            services.AddAutoMapper();
+            
             // Add framework services.
-            services.AddMvc();           
+            services.AddMvc(
+                config =>
+                {
+                    config.Filters.Add(new BadRequestActionFilter());
+                }
+            ).AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>()); // FluentValidation
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

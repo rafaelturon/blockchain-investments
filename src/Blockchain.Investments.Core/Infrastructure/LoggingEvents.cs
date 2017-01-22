@@ -1,4 +1,4 @@
-namespace Blockchain.Investments.Core
+namespace Blockchain.Investments.Core.Infrastructure
 {
     public class LoggingEvents
     {

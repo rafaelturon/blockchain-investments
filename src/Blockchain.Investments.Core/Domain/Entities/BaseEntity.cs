@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Blockchain.Investments.Core.Model
+namespace Blockchain.Investments.Core.Domain
 {
     public abstract class BaseEntity
     {

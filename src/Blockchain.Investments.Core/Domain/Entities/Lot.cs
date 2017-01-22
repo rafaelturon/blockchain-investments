@@ -1,6 +1,6 @@
 using System;
 
-namespace Blockchain.Investments.Core.Model
+namespace Blockchain.Investments.Core.Domain
 {
     public class Lot : BaseEntity
     {

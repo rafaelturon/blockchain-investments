@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
-namespace Blockchain.Investments.Core
+namespace Blockchain.Investments.Core.Infrastructure
 {
     public class DependencyResolver : IServiceLocator
     {

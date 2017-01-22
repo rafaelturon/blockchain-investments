@@ -1,6 +1,6 @@
 using System;
 
-namespace Blockchain.Investments.Core
+namespace Blockchain.Investments.Core.Infrastructure
 {
     public static class Util
     {

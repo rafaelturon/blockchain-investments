@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Blockchain.Investments.Core.Model;
+using Blockchain.Investments.Core.Domain;
 
 namespace Blockchain.Investments.Core.Repositories
 {

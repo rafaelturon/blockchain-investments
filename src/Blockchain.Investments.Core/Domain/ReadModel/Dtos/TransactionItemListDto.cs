@@ -1,5 +1,5 @@
 using System;
-using Blockchain.Investments.Core.Model;
+using Blockchain.Investments.Core.Domain;
 
 namespace Blockchain.Investments.Core.ReadModel.Dtos
 {

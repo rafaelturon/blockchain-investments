@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blockchain.Investments.Core.Infrastructure;
 using CQRSlite.Events;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;

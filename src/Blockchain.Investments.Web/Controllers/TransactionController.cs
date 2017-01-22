@@ -9,7 +9,8 @@ using CQRSlite.Commands;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Blockchain.Investments.Core.Model;
+using Blockchain.Investments.Core.Domain;
+using Blockchain.Investments.Core.Infrastructure;
 
 namespace Blockchain.Investments.Api.Controllers
 {
@@ -17,21 +18,16 @@ namespace Blockchain.Investments.Api.Controllers
     public class TransactionController : Controller
     {
         private readonly ILogger<TransactionController> _logger;
-        private readonly AppConfig _optionsAccessor;
         private readonly ICommandSender _commandSender;
         private readonly IReadModelFacade _readmodel;
 
         public TransactionController (ILogger<TransactionController> logger,
-                                        IOptions<AppConfig> optionsAccessor,
                                         ICommandSender commandSender,
                                         IReadModelFacade readmodel)
         {
             _logger = logger;
-            _optionsAccessor = optionsAccessor.Value;
             _readmodel = readmodel;
             _commandSender = commandSender;
-            
-            string conn = _optionsAccessor.MONGOLAB_URI;
         }
 
         // GET api/values
