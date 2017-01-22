@@ -1,4 +1,3 @@
-using System;
 using AutoMapper;
 using Blockchain.Investments.Core.ReadModel.Dtos;
 using Blockchain.Investments.Core.ReadModel.Events;

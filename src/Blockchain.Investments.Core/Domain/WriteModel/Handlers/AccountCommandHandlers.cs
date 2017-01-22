@@ -1,4 +1,3 @@
-using Blockchain.Investments.Core.ReadModel.Events;
 using Blockchain.Investments.Core.WriteModel.Commands;
 using Blockchain.Investments.Core.Domain;
 using CQRSlite.Commands;

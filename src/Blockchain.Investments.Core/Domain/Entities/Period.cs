@@ -1,4 +1,5 @@
 using System;
+using Blockchain.Investments.Core.Infrastructure.Domain;
 
 namespace Blockchain.Investments.Core.Domain
 {

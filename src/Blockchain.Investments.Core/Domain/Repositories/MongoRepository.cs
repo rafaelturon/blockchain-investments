@@ -2,7 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using Blockchain.Investments.Core.Infrastructure;
-using Blockchain.Investments.Core.Domain;
+using Blockchain.Investments.Core.Infrastructure.Domain;
 using Microsoft.Extensions.Options;
 using System.Linq;
 

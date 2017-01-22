@@ -1,3 +1,5 @@
+using Blockchain.Investments.Core.Infrastructure.Domain;
+
 namespace Blockchain.Investments.Core.Domain
 {
     public class Security : BaseEntity
