@@ -1,3 +1,4 @@
+using Blockchain.Investments.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blockchain.Investments.Api.Controllers
@@ -16,6 +17,13 @@ namespace Blockchain.Investments.Api.Controllers
         public string Echo(string message) 
         {
             return message;
+        }
+
+        [HttpGet]
+        [Route("getid")]
+        public string GetId() 
+        {
+            return Util.NewSequentialId().ToString();
         }
     }
 }
