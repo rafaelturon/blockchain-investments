@@ -5,6 +5,7 @@ using Blockchain.Investments.Core.Infrastructure;
 using Blockchain.Investments.Core.Infrastructure.Domain;
 using Microsoft.Extensions.Options;
 using System.Linq;
+using System;
 
 namespace Blockchain.Investments.Core.Repositories
 {
@@ -27,13 +28,24 @@ namespace Blockchain.Investments.Core.Repositories
             return _db.GetCollection<T>(_collection).Find(r => true).ToList();
         }
         
-        public virtual T FindById(string objectId)
+        public virtual T FindByObjectId(string objectId)
         {
             
             var filter = Builders<T>.Filter.Eq(r => r.ObjectId, new ObjectId(objectId));
             return _db.GetCollection<T>(_collection).Find(filter).First();
         }
- 
+        
+        public virtual T FindByAggregateId(Guid aggregateId) 
+        {
+            var filter = Builders<T>.Filter.Eq("AggregateId", aggregateId);
+            return _db.GetCollection<T>(_collection).Find(filter).First();
+        }
+        public virtual bool Exists(Guid aggregateId) 
+        {
+            var filter = Builders<T>.Filter.Eq("AggregateId", aggregateId);
+            var count = _db.GetCollection<T>(_collection).Find(filter).Count();
+            return count > 0;
+        }
         public virtual T Create(T p)
         {
             _db.GetCollection<T>(_collection).InsertOne(p);

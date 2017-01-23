@@ -10,6 +10,7 @@ using AutoMapper;
 using Blockchain.Investments.Core.WriteModel.Commands;
 using CQRSlite.Commands;
 using Blockchain.Investments.Core.ReadModel.Dtos;
+using System;
 
 namespace Blockchain.Investments.Api.Controllers
 {
@@ -38,40 +39,49 @@ namespace Blockchain.Investments.Api.Controllers
         }
 
         // GET api/values/5
-        // [HttpGet("{id:length(24)}")]
-        // public IActionResult Get(string id)
-        // {
-        //     _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id);
+        [HttpGet("{id:guid}")]
+        public IActionResult Get(Guid id)
+        {
+            _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id);
             
-        //     var account = _repo.FindById(id);
-        //     if (account == null)
-        //     {
-        //         _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id);
-        //         return NotFound();
-        //     }
-        //     return new ObjectResult(account);
-        // }
+            var account = _repo.FindByAggregateId(id);
+            if (account == null)
+            {
+                _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id);
+                return NotFound();
+            }
+            return new ObjectResult(account);
+        }
 
         // POST api/values
-        // [HttpPost]
-        // public IActionResult Post([FromBody]Account account)
-        // {
-        //     if (account == null)
-        //     {
-        //         return BadRequest();
-        //     }
-        //     var createdAccount = _repo.Create(account);
-        //     _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Created", createdAccount.UniqueId);
-        //     return new OkObjectResult(account);
-        // }
+        [HttpPost]
+        public IActionResult Post([FromBody]CreateAccountRequest request)
+        {
+            bool exists = _repo.Exists(request.Id);
+            if (!exists)
+            {
+                return BadRequest();
+            }
+           var command = _mapper.Map<AssignParentAccount>(request);
+            _commandSender.Send(command);
+
+            _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Assign parent requested", request.Id);
+            return new OkResult();
+        }
 
         // PUT api/values/5
         [HttpPut]
         public IActionResult Put([FromBody]CreateAccountRequest request)
         {
+            bool exists = _repo.Exists(request.Id);
+            if (exists) 
+            {
+                return BadRequest();
+            }
             var command = _mapper.Map<CreateAccount>(request);
             _commandSender.Send(command);
-
+            
+            _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Creation requested", request.Id);
             return new OkResult();
         }
 

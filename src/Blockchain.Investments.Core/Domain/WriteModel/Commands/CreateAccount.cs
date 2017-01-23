@@ -15,7 +15,7 @@ namespace Blockchain.Investments.Core.WriteModel.Commands
         public readonly Security Security;
         public readonly string ParentAccountId;
         public CreateAccount(Guid id, string userId, string title, string description, string notes, string code,
-                             int expectedVersion, AccountType type, CounterpartyType counterpartyType, Security security, string parentAccountId)
+                             AccountType type, CounterpartyType counterpartyType, Security security, string parentAccountId)
         {
             Id = id;
             UserId = userId;
@@ -27,7 +27,6 @@ namespace Blockchain.Investments.Core.WriteModel.Commands
             CounterpartyType = counterpartyType;
             Security = security;
             ParentAccountId = parentAccountId;
-            ExpectedVersion = expectedVersion;
         }
 	}
 }

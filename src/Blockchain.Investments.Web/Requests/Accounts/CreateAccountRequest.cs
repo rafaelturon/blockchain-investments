@@ -16,7 +16,6 @@ namespace Blockchain.Investments.Api.Requests.Accounts
         public string Description {get;set;}
         public string Notes {get;set;}
         public string Code {get;set;}
-        public int ExpectedVersion {get;set;}
         public AccountType Type {get;set;}
         public CounterpartyType CounterpartyType {get;set;}
         public Security Security {get;set;}

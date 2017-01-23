@@ -15,6 +15,14 @@ namespace Blockchain.Investments.Core.Domain
         private Security _security;
         private string _parentAccountId;
 
+        public void AddParentAccount(Guid id, string parentAccountId) 
+        {
+            Id = id;
+            _parentAccountId = parentAccountId;
+
+            ApplyChange(new ParentAccountAssigned(id, parentAccountId));
+        }
+
         private Account() {}
         public Account(Guid id, string title, string description, string notes, string code, AccountType type,
                         CounterpartyType counterpartyType, Security security, string parentAccountId) 

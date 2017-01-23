@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft​.Extensions​.Options;
-using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.Infrastructure;
 using Blockchain.Investments.Core.Domain;
 using Blockchain.Investments.Core.Repositories;
@@ -35,7 +33,7 @@ namespace Blockchain.Investments.Api.Controllers
         {
             _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id);
             
-            var currency = _repo.FindById(id);
+            var currency = _repo.FindByObjectId(id);
             if (currency == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "GetById({ID}) NOT FOUND", id);
@@ -66,7 +64,7 @@ namespace Blockchain.Investments.Api.Controllers
                 return BadRequest();
             }
 
-            var currentMarket = _repo.FindById(security.UniqueId);
+            var currentMarket = _repo.FindByObjectId(security.UniqueId);
             if (currentMarket == null)
             {
                 _logger.LogWarning(LoggingEvents.GET_ITEM_NOTFOUND, "Update({0}) NOT FOUND", security.UniqueId);
@@ -82,7 +80,7 @@ namespace Blockchain.Investments.Api.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
-            var currency = _repo.FindById(id);
+            var currency = _repo.FindByObjectId(id);
             if (currency == null)
             {
                 return NotFound();

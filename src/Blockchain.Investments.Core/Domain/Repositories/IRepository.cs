@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Blockchain.Investments.Core.Infrastructure.Domain;
 
@@ -10,6 +11,8 @@ namespace Blockchain.Investments.Core.Repositories
         T Create(T item);
         void Remove(string objectId);
         void Update(string objectId, T entity);
-        T FindById(string objectId);
+        T FindByObjectId(string objectId);
+        T FindByAggregateId(Guid aggregateId);
+        bool Exists(Guid aggregateId);
     }
 }

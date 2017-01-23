@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Blockchain.Investments.Core.ReadModel.Events
 {
-    public class AccountCreated : IEvent 
+    public class ParentAccountAssigned : IEvent 
     {
         private ObjectId _objectId;
         [BsonId]
@@ -37,29 +37,14 @@ namespace Blockchain.Investments.Core.ReadModel.Events
         }
         public string AggregateId {get; set;}
         
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Notes { get; set; }
-        public string Code { get; set; }
-        public AccountType Type { get; set; }
-        public CounterpartyType CounterpartyType { get; set; }
-        public Security Security { get; set; }
         public string ParentAccountId { get; set; }
         public int Version { get; set; }
         public DateTimeOffset TimeStamp { get; set; }
-        public AccountCreated() {}
-        public AccountCreated(Guid id, string title, string description, string notes, string code, AccountType type,
-                            CounterpartyType counterpartyType, Security security, string parentAccountId) 
+        public ParentAccountAssigned() {}
+        public ParentAccountAssigned(Guid id, string parentAccountId) 
         {
             Id = id;
             AggregateId = id.ToString();
-            Title = title;
-            Description = description;
-            Notes = notes;
-            Code = code;
-            Type = type;
-            CounterpartyType = counterpartyType;
-            Security = security;
             ParentAccountId = parentAccountId;
         }
     }
