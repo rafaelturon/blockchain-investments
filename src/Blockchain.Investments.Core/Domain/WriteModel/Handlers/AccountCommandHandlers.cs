@@ -6,7 +6,8 @@ using CQRSlite.Domain;
 namespace Blockchain.Investments.Core.WriteModel.Handlers
 {
     public class AccountCommandHandlers : ICommandHandler<CreateAccount>,
-                                            ICommandHandler<AssignParentAccount>
+                                            ICommandHandler<AssignParentAccount>,
+                                            ICommandHandler<DeleteAccount>
     {
         private readonly ISession _session;
 
@@ -16,8 +17,8 @@ namespace Blockchain.Investments.Core.WriteModel.Handlers
         }
         public void Handle(AssignParentAccount message)
         {
-            var item = _session.Get<Account>(message.Id);
-            item.AddParentAccount(message.Id, message.ParentAccountId);
+            Account account = _session.Get<Account>(message.Id);
+            account.AddParentAccount(message.Id, message.ParentAccountId);
             _session.Commit();
         }
         public void Handle(CreateAccount message)
@@ -25,6 +26,13 @@ namespace Blockchain.Investments.Core.WriteModel.Handlers
             Account account = new Account(message.Id, message.Title, message.Description, message.Notes, message.Code,
                                 message.Type, message.CounterpartyType, message.Security, message.ParentAccountId);
             _session.Add(account);
+            _session.Commit();
+        }
+
+        public void Handle(DeleteAccount message) 
+        {
+            Account account = _session.Get<Account>(message.Id);
+            account.DeleteAccount(message.Id, message.UserId);
             _session.Commit();
         }
     }

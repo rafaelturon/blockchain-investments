@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace Blockchain.Investments.Api.Requests.Accounts
 {
-    public class CreateAccountRequest
+    public class AccountRequest
     {
         public Guid Id {get;set;}
         public string UserId {get;set;}
@@ -23,9 +23,9 @@ namespace Blockchain.Investments.Api.Requests.Accounts
         
     }
 
-    public class CreateAccountRequestValidator : AbstractValidator<CreateAccountRequest> 
+    public class AccountRequestValidator : AbstractValidator<AccountRequest> 
     {
-        public CreateAccountRequestValidator(IRepository<AccountDto> repo, IOptions<AppConfig> optionsAccessor)
+        public AccountRequestValidator(IRepository<AccountDto> repo, IOptions<AppConfig> optionsAccessor)
         { 
             //RuleFor(x => x.EmployeeID).Must(x => !employeeRepo.Exists(x)).WithMessage("An Employee with this ID already exists.");
             RuleFor(x => x.Title).NotNull().NotEmpty().WithMessage("The Title cannot be blank.");

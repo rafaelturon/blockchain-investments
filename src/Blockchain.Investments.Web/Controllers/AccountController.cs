@@ -55,7 +55,7 @@ namespace Blockchain.Investments.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]CreateAccountRequest request)
+        public IActionResult Post([FromBody]AccountRequest request)
         {
             bool exists = _repo.Exists(request.Id);
             if (!exists)
@@ -71,7 +71,7 @@ namespace Blockchain.Investments.Api.Controllers
 
         // PUT api/values/5
         [HttpPut]
-        public IActionResult Put([FromBody]CreateAccountRequest request)
+        public IActionResult Put([FromBody]AccountRequest request)
         {
             bool exists = _repo.Exists(request.Id);
             if (exists) 
@@ -86,18 +86,19 @@ namespace Blockchain.Investments.Api.Controllers
         }
 
         // DELETE api/values/5
-        // [HttpDelete("{id:length(24)}")]
-        // public IActionResult Delete(string id)
-        // {
-        //     var account = _repo.FindById(id);
-        //     if (account == null)
-        //     {
-        //         return NotFound();
-        //     }
- 
-        //     _repo.Remove(id);
-        //     _logger.LogInformation(LoggingEvents.DELETE_ITEM, "Item {0} Deleted", id);
-        //     return new OkResult();
-        // }
+        [HttpDelete]
+        public IActionResult Delete([FromBody]AccountRequest request)
+        {
+            bool exists = _repo.Exists(request.Id);
+            if (!exists) 
+            {
+                return BadRequest();
+            }
+            var command = _mapper.Map<DeleteAccount>(request);
+            _commandSender.Send(command);
+
+            _logger.LogInformation(LoggingEvents.DELETE_ITEM, "Item {0} Delete requested", request.Id);
+            return new OkResult();
+        }
     }
 }

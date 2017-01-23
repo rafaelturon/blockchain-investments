@@ -8,11 +8,13 @@ namespace Blockchain.Investments.Api.AutoMapperConfig
     {
         public AccountProfile() 
         {
-            CreateMap<CreateAccountRequest, CreateAccount>()
+            CreateMap<AccountRequest, CreateAccount>()
                 .ConstructUsing(x => new CreateAccount(x.Id, x.UserId, x.Title, x.Description,
                 x.Notes, x.Code, x.Type, x.CounterpartyType, x.Security, x.ParentAccountId));
-            CreateMap<CreateAccountRequest, AssignParentAccount>()
+            CreateMap<AccountRequest, AssignParentAccount>()
                 .ConstructUsing(x => new AssignParentAccount(x.Id, x.UserId, x.ParentAccountId));
+            CreateMap<AccountRequest, DeleteAccount>()
+                .ConstructUsing(x => new DeleteAccount(x.Id, x.UserId));
         }
     }
 }

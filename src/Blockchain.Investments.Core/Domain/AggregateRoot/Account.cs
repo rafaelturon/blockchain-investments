@@ -23,6 +23,13 @@ namespace Blockchain.Investments.Core.Domain
             ApplyChange(new ParentAccountAssigned(id, parentAccountId));
         }
 
+        public void DeleteAccount(Guid id, string userId) 
+        {
+            Id = id;
+            
+            ApplyChange(new AccountDeleted(id, userId));
+        }
+
         private Account() {}
         public Account(Guid id, string title, string description, string notes, string code, AccountType type,
                         CounterpartyType counterpartyType, Security security, string parentAccountId) 

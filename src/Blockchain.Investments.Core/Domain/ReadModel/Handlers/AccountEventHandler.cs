@@ -6,7 +6,8 @@ using CQRSlite.Events;
 namespace Blockchain.Investments.Core.ReadModel.Handlers
 {
     public class AccountEventHandler : IEventHandler<AccountCreated>,
-                                        IEventHandler<ParentAccountAssigned>
+                                        IEventHandler<ParentAccountAssigned>,
+                                        IEventHandler<AccountDeleted>
     {
         private readonly IRepository<AccountDto> _repo;
         public AccountEventHandler (IRepository<AccountDto> repo) 
@@ -28,6 +29,12 @@ namespace Blockchain.Investments.Core.ReadModel.Handlers
             account.ParentAccountId = message.ParentAccountId;
 
             _repo.Update(account.UniqueId, account);
+        }
+
+        public void Handle(AccountDeleted message) 
+        {
+            AccountDto account = _repo.FindByAggregateId(message.Id);
+            _repo.Remove(account.UniqueId);
         }
     }
 }
