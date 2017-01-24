@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-declare var _abcUi: any;
-declare var _account: any;
+declare var Ledger: any;
 
 @Component({
     selector: 'nav-menu',
@@ -10,13 +9,12 @@ declare var _account: any;
 
 export class NavMenuComponent {
     login(event) {
-        if (_account === null) {
-            _abcUi.openLoginWindow(function(error, account) {
-                _account = account;
-            });
-        } else {
-            _account.logout();
+        Ledger.init({ callback: this.callback });
+        Ledger.bitid('bitid://bitid.bitcoin.blue/callback?x=5f38d0fb45b25015&u=1');//
+    }
+    callback(event) {
+        if (event.response.command == "bitid") {
+            console.log(event.response);
         }
-        // Account Id: _account.repoInfo.dataKey.toString('base64')
     }
 }

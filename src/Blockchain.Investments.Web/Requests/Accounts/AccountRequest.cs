@@ -26,7 +26,8 @@ namespace Blockchain.Investments.Api.Requests.Accounts
     public class AccountRequestValidator : AbstractValidator<AccountRequest> 
     {
         public AccountRequestValidator(IRepository<AccountDto> repo, IOptions<AppConfig> optionsAccessor)
-        { 
+        {
+            //RuleFor(x => x.Id).Must(x => !repo.Exists(x)).WithMessage("An Account with this ID already exists.");
             //RuleFor(x => x.EmployeeID).Must(x => !employeeRepo.Exists(x)).WithMessage("An Employee with this ID already exists.");
             RuleFor(x => x.Title).NotNull().NotEmpty().WithMessage("The Title cannot be blank.");
             //RuleFor(x => x.DateOfBirth).LessThan(DateTime.Today.AddYears(-16)).WithMessage("Employees must be 16 years old or older.");

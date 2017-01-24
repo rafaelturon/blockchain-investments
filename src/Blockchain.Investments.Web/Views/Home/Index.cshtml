@@ -7,17 +7,5 @@
 <script src="~/dist/vendor.js" asp-append-version="true"></script>
 @section scripts {
     <script src="~/dist/main-client.js" asp-append-version="true"></script>
-    <script src="~/abcui/assets/dist/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-    <script src="~/abcui/assets/js/abcui.js" asp-append-version="true"></script>
-    <script>
-        var _account = null;
-        var _abcUi = null;
-        _abcUi = abcui.makeABCUIContext({
-            'apiKey': '11c5df12a89d1fabcbb948216a49a75637dfb2fd',
-            'accountType': 'account:repo:com.herokuapp.blockchain-investments',
-            'bundlePath': 'abcui',
-            'vendorName': 'Blockchain Investments',
-            'vendorImageUrl': 'https://airbitz.co/go/wp-content/uploads/2016/10/GenericEdgeLoginIcon.png'
-        });
-    </script>
+    <script src="~/ledger.js" asp-append-version="true"></script>
 }

@@ -8,7 +8,8 @@
                 <span class='icon-bar'></span>
             </button>
             <a class='navbar-brand' [routerLink]="['/home']">Blockchain Investments</a>
-            <button class="btn btn-primary center-block" (click)="login()">Airbitz Edge Login</button>
+            <button class="btn btn-success center-block" (click)="login()">Login with your Ledger Wallet</button>
+            <br/>
         </div>
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
@@ -32,52 +33,3 @@
         </div>
     </div>
 </div>
-<script>
-        var _account = null;
-        var _abcUi = null;
-        // Replace '0b5776a91bf409ac10a3fe5f3944bf50417209a0' with your own API key from https://developer.airbitz.co
-        _abcUi = abcui.makeABCUIContext({
-            'apiKey': '11c5df12a89d1fabcbb948216a49a75637dfb2fd',
-            'accountType': 'account:repo:com.herokuapp.blockchain-investments',
-            'bundlePath': 'abcui',
-            'vendorName': 'Blockchain Investments',
-            'vendorImageUrl': 'https://airbitz.co/go/wp-content/uploads/2016/10/GenericEdgeLoginIcon.png'
-        });
-        function updateUi() {
-          if (_abcUi == null) {
-            $('.logged_out').hide();
-            $('.logged_in').hide();
-          } else if (_account == null) {
-            $('.logged_out').show();
-            $('.logged_in').hide();
-          } else {
-            $('.logged_out').hide();
-            $('.logged_in').show();
-            $('#username').text(_account.username);
-            $('#key').text(_account.repoInfo.dataKey.toString('base64'));
-          }
-        }
-//        $(function() {
-//          $('#apiKeySubmit').click(function() {
-//            _abcUi = abcui.AbcUi({'key': $('#apiKey').val(), 'bundle-path': '/ui'});
-            $('#login').click(function() {
-              _abcUi.openLoginWindow(function(error, account) {
-                _account = account;
-                updateUi();
-              });
-            });
-            $('#logout').click(function() {
-              _account.logout();
-              _account = null;
-              updateUi();
-            });
-            $('#account').click(function() {
-              _abcUi.openManageWindow(_account, function(error) {
-                updateUi();
-              });
-            });
-            updateUi();
-//        });
-//        updateUi();
-//      });
-    </script>
