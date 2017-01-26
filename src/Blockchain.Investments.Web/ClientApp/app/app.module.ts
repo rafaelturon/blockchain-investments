@@ -4,6 +4,7 @@ import { UniversalModule } from 'angular2-universal';
 import { AppComponent } from './components/app/app.component'
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent} from './components/login/login.component';
 import { SecuritiesComponent } from './components/securities/securities.component';
 import { CounterComponent } from './components/counter/counter.component';
 
@@ -12,6 +13,7 @@ import { CounterComponent } from './components/counter/counter.component';
     declarations: [
         AppComponent,
         NavMenuComponent,
+        LoginComponent,
         CounterComponent,
         SecuritiesComponent,
         HomeComponent
@@ -21,6 +23,7 @@ import { CounterComponent } from './components/counter/counter.component';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
+            { path: 'login', component: LoginComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'securities', component: SecuritiesComponent },
             { path: '**', redirectTo: 'home' }

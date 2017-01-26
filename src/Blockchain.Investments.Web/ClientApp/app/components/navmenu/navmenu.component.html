@@ -8,8 +8,6 @@
                 <span class='icon-bar'></span>
             </button>
             <a class='navbar-brand' [routerLink]="['/home']">Blockchain Investments</a>
-            <button class="btn btn-success center-block" (click)="login()">Login with your Ledger Wallet</button>
-            <br/>
         </div>
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
@@ -17,6 +15,11 @@
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/home']">
                         <span class='glyphicon glyphicon-home'></span> Home
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/login']">
+                        <span class='glyphicon glyphicon-log-in'></span> Login
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
