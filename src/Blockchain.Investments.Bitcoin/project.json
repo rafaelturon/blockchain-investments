@@ -5,7 +5,8 @@
     "emitEntryPoint": true
   },
   "dependencies": {
-    "NBitcoin": "3.0.1.6"
+    "NBitcoin": "3.0.1.6",
+    "Blockchain.Investments.Core": { "target": "project" }
   },
   "frameworks": {
     "netcoreapp1.1": {

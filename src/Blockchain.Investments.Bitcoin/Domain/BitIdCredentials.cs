@@ -1,4 +1,5 @@
 using System;
+using Blockchain.Investments.Core.Infrastructure;
 using NBitcoin;
 
 namespace Blockchain.Investments.Bitcoin.Domain
@@ -26,7 +27,7 @@ namespace Blockchain.Investments.Bitcoin.Domain
                 string hexTicks = nonce.Substring(32, 15);
                 long ticks = Convert.ToInt64(hexTicks, 16);
                 double spanSeconds = DateTime.UtcNow.Subtract(new DateTime(ticks)).TotalSeconds;
-                if (spanSeconds > 600) 
+                if (spanSeconds > Constants.SpanTimeInSeconds) 
                 {
                     response.Message = "Request timeout!";
                     return response;

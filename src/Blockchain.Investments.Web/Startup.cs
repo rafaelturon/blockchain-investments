@@ -1,11 +1,16 @@
-using System.Reflection;
+using System;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using CQRSlite.Config;
 using CQRSlite.Bus;
 using CQRSlite.Commands;
@@ -13,6 +18,8 @@ using CQRSlite.Events;
 using CQRSlite.Domain;
 using CQRSlite.Cache;
 using Scrutor;
+using Blockchain.Investments.Api.Options;
+using Blockchain.Investments.Api.Requests;
 using Blockchain.Investments.Core.Infrastructure;
 using Blockchain.Investments.Core.Repositories;
 using Blockchain.Investments.Core.WriteModel.Handlers;
@@ -24,7 +31,6 @@ using MongoDB.Driver;
 using MongoDB.Bson.Serialization;
 using AutoMapper;
 using FluentValidation.AspNetCore;
-using Blockchain.Investments.Api.Requests;
 
 namespace Blockchain.Investments.Api
 {
@@ -42,11 +48,17 @@ namespace Blockchain.Investments.Api
 
         public IConfigurationRoot Configuration { get; }
 
+        private SymmetricSecurityKey _signingKey;
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Register the IConfiguration instance which AppConfig binds against.
             services.Configure<AppConfig>(Configuration);
+
+            // Set symmetric security key
+            string securityKey = Environment.GetEnvironmentVariable("JWT_SECURITY_KEY");
+            _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(securityKey));
             
             // Add application services
             services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(Configuration);
@@ -110,14 +122,39 @@ namespace Blockchain.Investments.Api
             services.AddMvc(
                 config =>
                 {
+                    // Make authentication compulsory
+                    var policy = new AuthorizationPolicyBuilder()
+                         .RequireAuthenticatedUser()
+                         .Build();
+                    config.Filters.Add(new AuthorizeFilter(policy));
+                    // Bad request filter
                     config.Filters.Add(new BadRequestActionFilter());
                 }
             ).AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>()); // FluentValidation
+
+            // Set up authorization policies.
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Constants.AuthorizationPolicy,
+                                policy => policy.RequireClaim(Constants.ClaimType, Constants.ClaimValue));
+            });
+            
+            // Get options from app settings
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+
+            // Configure JwtIssuerOptions
+            services.Configure<JwtIssuerOptions>(options =>
+            {
+                options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            string currentUrl = app.ServerFeatures.Get<Microsoft.AspNetCore.Hosting.Server.Features.IServerAddressesFeature>().Addresses.Single();
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -134,6 +171,31 @@ namespace Blockchain.Investments.Api
             }
 
             app.UseStaticFiles();
+
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+
+                ValidateAudience = false,
+                ValidAudience = currentUrl,
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = _signingKey,
+
+                RequireExpirationTime = true,
+                ValidateLifetime = true,
+
+                ClockSkew = TimeSpan.Zero
+            };
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                TokenValidationParameters = tokenValidationParameters
+            });
 
             app.UseMvc(routes =>
             {
