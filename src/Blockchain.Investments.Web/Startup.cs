@@ -153,7 +153,7 @@ namespace Blockchain.Investments.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            string currentUrl = app.ServerFeatures.Get<Microsoft.AspNetCore.Hosting.Server.Features.IServerAddressesFeature>().Addresses.Single();
+            //string currentUrl = app.ServerFeatures.Get<Microsoft.AspNetCore.Hosting.Server.Features.IServerAddressesFeature>().Addresses.Single();
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -179,7 +179,7 @@ namespace Blockchain.Investments.Api
                 ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
 
                 ValidateAudience = false,
-                ValidAudience = currentUrl,
+                //ValidAudience = currentUrl,
 
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = _signingKey,

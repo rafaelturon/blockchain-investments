@@ -24,8 +24,11 @@ namespace Blockchain.Investments.Api.Controllers
         {
             _jwtOptions = jwtOptions.Value;
             ThrowIfInvalidOptions(_jwtOptions);
-
             _logger = logger;
+            _serializerSettings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented
+            };
         }
         [HttpGet]
         [AllowAnonymous]

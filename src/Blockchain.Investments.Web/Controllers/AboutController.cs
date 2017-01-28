@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Blockchain.Investments.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blockchain.Investments.Api.Controllers
 {
     [Route("api/[controller]")]
+    [AllowAnonymous]
     public class AboutController : Controller
     {
         [HttpGet]
