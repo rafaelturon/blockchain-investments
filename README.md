@@ -7,7 +7,8 @@ Blockchain Investments is an open-source project to increase control over your b
 
 # Description
 This application will include:
-* Safe token based authentication with BitId login using public key signature validation
+* Safe token based authentication with [BitID](https://github.com/bitid/bitid) login using public key signature validation
+[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/6vGxgLB6Y0w/0.jpg)](http://www.youtube.com/watch?v=6vGxgLB6Y0w)
 * Ledger and journal double entry bookkeeping where entries are recorded by debiting one or more accounts and crediting another one or more accounts with the same total amount
 * Automatic investment plan (recurring deposits)
 * Monitor portfolio by risk (coins, bonds and stocks) and profile (from conservative to aggressive)
