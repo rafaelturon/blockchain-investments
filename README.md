@@ -45,3 +45,7 @@ Running `dotnet test` will run the unit tests with xunit.
 ## Deployment
 Running `dotnet publish` will run the deployment steps.
 > Setting up `ASPNETCORE_ENVIRONMENT`, `MONGOLAB_URI` and `JWT_SECURITY_KEY` environment variables will be necessary in your deployment. [ASP.NET Core Environments](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments)
+
+### Donate
+You can send your donation to:
+* 1Cx7ygHfjXStmAyFfn4dioekpxhvmAEtLz
