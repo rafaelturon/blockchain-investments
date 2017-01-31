@@ -127,7 +127,7 @@ namespace Blockchain.Investments.Api.Controllers
             return new ClaimsIdentity(new GenericIdentity(bitcoinPublicAddress, "Token"),
                 new[]
                 {
-                    new Claim(Constants.ClaimType, Constants.ClaimValue)
+                    new Claim(Constants.ClaimType, bitcoinPublicAddress)
                 });
         }
     }

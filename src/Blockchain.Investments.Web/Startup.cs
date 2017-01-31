@@ -61,6 +61,7 @@ namespace Blockchain.Investments.Api
             _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(securityKey));
             
             // Add application services
+            services.AddSingleton<Microsoft.AspNetCore.Http.IHttpContextAccessor, Microsoft.AspNetCore.Http.HttpContextAccessor>();
             services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(Configuration);
             services.AddSingleton<IRepository<BookDto>, MongoRepository<BookDto>>();
             services.AddSingleton<IRepository<AccountDto>, MongoRepository<AccountDto>>();

@@ -1,16 +1,15 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Blockchain.Investments.Core;
 using Blockchain.Investments.Core.ReadModel;
 using Blockchain.Investments.Core.ReadModel.Dtos;
 using Blockchain.Investments.Core.WriteModel.Commands;
 using CQRSlite.Commands;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Blockchain.Investments.Core.Domain;
 using Blockchain.Investments.Core.Infrastructure;
+using Microsoft.AspNetCore.Http;
 
 namespace Blockchain.Investments.Api.Controllers
 {
@@ -20,12 +19,15 @@ namespace Blockchain.Investments.Api.Controllers
         private readonly ILogger<TransactionController> _logger;
         private readonly ICommandSender _commandSender;
         private readonly IReadModelFacade _readmodel;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public TransactionController (ILogger<TransactionController> logger,
+                                        IHttpContextAccessor httpContextAccessor,
                                         ICommandSender commandSender,
                                         IReadModelFacade readmodel)
         {
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
             _readmodel = readmodel;
             _commandSender = commandSender;
         }
@@ -57,7 +59,10 @@ namespace Blockchain.Investments.Api.Controllers
         [HttpPut]
         public IActionResult Put([FromBody]JournalEntry journalEntry)
         {
-            string userId = "12345";
+            string userId = _httpContextAccessor.HttpContext.User.Claims
+                            .Where(c => c.Type == Constants.ClaimType)
+                            .Select(c => c.Value).SingleOrDefault();
+
             if (journalEntry == null || journalEntry.EventDate == null ||
                  journalEntry.Splits == null || journalEntry.Splits.Count < 2 ||
                  journalEntry.Version != 0)
