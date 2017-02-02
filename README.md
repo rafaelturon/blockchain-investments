@@ -23,6 +23,7 @@ This application will include:
 * **Core**: *Optimal Asset Allocation*
 * **Supporting**: *Saving and Investment*
 * **Generic**: *Ledger and Pricing (external)*
+> [Ledger Domain - Entity-Relationship](https://github.com/rafaelturon/blockchain-investments-docs/blob/master/er-ledger.md)
 
 ### Technical Details
 **Client Side** - Angular 2 TypeScript app packaged with WebPack and Bootstrap layout and styling:
@@ -46,6 +47,6 @@ Running `dotnet test` will run the unit tests with xunit.
 Running `dotnet publish` will run the deployment steps.
 > Setting up `ASPNETCORE_ENVIRONMENT`, `MONGOLAB_URI` and `JWT_SECURITY_KEY` environment variables will be necessary in your deployment. [ASP.NET Core Environments](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments)
 
-### Donate
+### Donate bitcoins
 You can send your donation to:
 * 1Cx7ygHfjXStmAyFfn4dioekpxhvmAEtLz
