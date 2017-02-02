@@ -104,12 +104,27 @@ namespace Blockchain.Investments.Api
             
             //Register Mongo
             MongoDefaults.GuidRepresentation = MongoDB.Bson.GuidRepresentation.Standard;
-            BsonClassMap.RegisterClassMap<TransactionCreated>(cm =>
+            BsonClassMap.RegisterClassMap<AccountCreated>(cm =>
             {
                 cm.AutoMap();
                 cm.SetIdMember(cm.GetMemberMap(c => c.ObjectId));
             });
-            BsonClassMap.RegisterClassMap<AccountCreated>(cm =>
+            BsonClassMap.RegisterClassMap<AccountDeleted>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetIdMember(cm.GetMemberMap(c => c.ObjectId));
+            });
+            BsonClassMap.RegisterClassMap<BookCreated>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetIdMember(cm.GetMemberMap(c => c.ObjectId));
+            });
+            BsonClassMap.RegisterClassMap<ParentAccountAssigned>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetIdMember(cm.GetMemberMap(c => c.ObjectId));
+            });
+            BsonClassMap.RegisterClassMap<TransactionCreated>(cm =>
             {
                 cm.AutoMap();
                 cm.SetIdMember(cm.GetMemberMap(c => c.ObjectId));

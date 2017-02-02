@@ -40,6 +40,14 @@ namespace Blockchain.Investments.Core.Repositories
             var filter = Builders<T>.Filter.Eq("AggregateId", aggregateId);
             return _db.GetCollection<T>(_collection).Find(filter).First();
         }
+        public virtual T Find(string field, string value) 
+        {
+            var filter = Builders<T>.Filter.Eq(field, value);
+            var result = _db.GetCollection<T>(_collection).Find(filter);
+            if (result.Count() > 0)
+                return result.First();
+            return null;
+        }
         public virtual bool Exists(Guid aggregateId) 
         {
             var filter = Builders<T>.Filter.Eq("AggregateId", aggregateId);

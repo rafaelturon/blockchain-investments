@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Blockchain.Investments.Core.Domain;
 using Blockchain.Investments.Core.Infrastructure.Domain;
 
@@ -8,13 +9,14 @@ namespace Blockchain.Investments.Core.ReadModel.Dtos
     {
         public Guid AggregateId;
         public string UserId;
-        public JournalEntry JournalEntry;
+        public List<JournalEntry> Journal;
         public BookDto() {}
         public BookDto(Guid id, string userId, JournalEntry journalEntry)
         {
+            Journal = new List<JournalEntry>();
             AggregateId = id;
             UserId = userId;
-            JournalEntry = journalEntry;
+            Journal.Add(journalEntry);
         }
     }
 }

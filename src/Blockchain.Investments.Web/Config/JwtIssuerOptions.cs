@@ -66,9 +66,9 @@ namespace Blockchain.Investments.Api.Options
     public DateTime IssuedAt => DateTime.UtcNow;
 
     /// <summary>
-    /// Set the timespan the token will be valid for (default is 10 min/600 seconds)
+    /// Set the timespan the token will be valid for (default is 30 days)
     /// </summary>
-    public TimeSpan ValidFor { get; set; } = TimeSpan.FromSeconds(Constants.SpanTimeInSeconds);
+    public TimeSpan ValidFor { get; set; } = TimeSpan.FromDays(30);
 
     /// <summary>
     /// "exp" (Expiration Time) Claim (returns IssuedAt + ValidFor)

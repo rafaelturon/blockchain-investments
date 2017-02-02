@@ -11,7 +11,6 @@ namespace Blockchain.Investments.Core.Domain
         
         public void AddTransaction(Guid id, string userId, JournalEntry journalEntry) 
         {
-            if (journalEntry.Version == 0) throw new ArgumentException("IncorrectTransactionVersion");
             ApplyChange(new TransactionCreated(id, userId, journalEntry));
         }
         private Book(){}
@@ -20,7 +19,7 @@ namespace Blockchain.Investments.Core.Domain
             Id = id;
             _userId = userId;
             _journalEntry = journalEntry;
-            ApplyChange(new TransactionCreated(id, userId, journalEntry));
+            ApplyChange(new BookCreated(id, userId, journalEntry));
         }
     }
 }

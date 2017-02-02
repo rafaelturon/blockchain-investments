@@ -56,41 +56,31 @@ namespace Blockchain.Investments.Api.Controllers
         }
 
         // POST api/values
-        [HttpPut]
-        public IActionResult Put([FromBody]JournalEntry journalEntry)
-        {
-            string userId = _httpContextAccessor.HttpContext.User.Claims
-                            .Where(c => c.Type == Constants.ClaimType)
-                            .Select(c => c.Value).SingleOrDefault();
-
-            if (journalEntry == null || journalEntry.EventDate == null ||
-                 journalEntry.Splits == null || journalEntry.Splits.Count < 2 ||
-                 journalEntry.Version != 0)
-            {
-                return BadRequest();
-            }
-            //Guid journalEntryId = Util.NewSequentialId();
-            Guid journalEntryId = new Guid("41c0756d-2c91-93c5-64c0-a08d590160b4");
-            _commandSender.Send(new CreateJournal(journalEntryId, userId, journalEntry));
-            _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Added", journalEntryId);
-            return new OkResult();
-        }
-
-        // POST api/values
         [HttpPost]
         public IActionResult Post([FromBody]JournalEntry journalEntry)
         {
-            string userId = "12345";
             if (journalEntry == null || journalEntry.EventDate == null ||
-                 journalEntry.Splits == null || journalEntry.Splits.Count < 2 ||
-                 journalEntry.Version == 0)
+                 journalEntry.Splits == null || journalEntry.Splits.Count < 2)
             {
                 return BadRequest();
             }
-            //Guid journalEntryId = Util.NewSequentialId();
-            Guid journalEntryId = new Guid("41c0756d-2c91-93c5-64c0-a08d590160b4");
-            _commandSender.Send(new AddJournalEntry(journalEntryId, userId, journalEntry));
-            _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Added", journalEntryId);
+            
+            string userId = _httpContextAccessor.HttpContext.User.Claims
+                            .Where(c => c.Type == Constants.ClaimType)
+                            .Select(c => c.Value).SingleOrDefault();
+            BookDto book = _readmodel.Find("UserId", userId);
+            if (book == null) 
+            {
+                Guid journalEntryId = Guid.NewGuid();
+                _commandSender.Send(new CreateJournal(journalEntryId, userId, journalEntry));
+                _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Added. New Book", journalEntryId);
+            }
+            else 
+            {
+                _commandSender.Send(new AddJournalEntry(book.AggregateId, userId, journalEntry));
+                _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Added", book.AggregateId);
+            }         
+
             return new OkResult();
         }
     }

@@ -13,6 +13,7 @@ namespace Blockchain.Investments.Core.Repositories
         void Update(string objectId, T entity);
         T FindByObjectId(string objectId);
         T FindByAggregateId(Guid aggregateId);
+        T Find(string field, string value);
         bool Exists(Guid aggregateId);
     }
 }

@@ -7,7 +7,7 @@ using CQRSlite.Domain;
 namespace Blockchain.Investments.Core.WriteModel.Handlers
 {
     public class BookCommandHandlers : ICommandHandler<CreateJournal>,
-                                                    ICommandHandler<AddJournalEntry>											
+                                        ICommandHandler<AddJournalEntry>											
     {
         private readonly ISession _session;
 
@@ -25,7 +25,7 @@ namespace Blockchain.Investments.Core.WriteModel.Handlers
 
         public void Handle(AddJournalEntry message)
         {
-            var item = _session.Get<Book>(message.Id, message.ExpectedVersion);
+            var item = _session.Get<Book>(message.Id);
             item.AddTransaction(message.Id, message.UserId, message.JournalEntry);
             _session.Commit();
         }

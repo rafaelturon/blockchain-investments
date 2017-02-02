@@ -12,7 +12,6 @@ namespace Blockchain.Investments.Core.WriteModel.Commands
             Id = id;
             UserId = userId;
             JournalEntry = journalEntry;
-            ExpectedVersion = 0;
         }
 	}
 }

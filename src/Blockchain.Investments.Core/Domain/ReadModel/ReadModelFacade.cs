@@ -15,5 +15,9 @@ namespace Blockchain.Investments.Core.ReadModel
         {
             return _repo.FindAll();
         }
+        public BookDto Find(string field, string value) 
+        {
+            return _repo.Find(field, value);
+        }
     }
 }

@@ -9,6 +9,5 @@ namespace Blockchain.Investments.Core.Domain
         public DateTime EventDate {get;set;}
         public string Description {get;set;}
         public List<Transaction> Splits {get;set;}
-        public int Version {get;set;}
     }
 }
