@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Blockchain.Investments.Core.Domain;
 using CQRSlite.Events;
 using MongoDB.Bson;
@@ -9,12 +10,13 @@ namespace Blockchain.Investments.Core.ReadModel.Events
     public class TransactionCreated : IEvent 
 	{
         public TransactionCreated() {}
-        public TransactionCreated(Guid id, string userId, JournalEntry journalEntry) 
+        public TransactionCreated(Guid id, string userId, JournalEntry journalEntry, Dictionary<string, LedgerEntry> ledgerEntry) 
         {
             Id = id;
             AggregateId = id.ToString();
             UserId = userId;
             JournalEntry = journalEntry;
+            LedgerEntry = ledgerEntry;
         }
         private ObjectId _objectId;
         [BsonId]
@@ -46,6 +48,7 @@ namespace Blockchain.Investments.Core.ReadModel.Events
         public string AggregateId {get; set;}
         public string UserId { get; set; }
         public JournalEntry JournalEntry { get; set; }
+        public Dictionary<string, LedgerEntry> LedgerEntry { get; set; }
         public int Version { get; set; }
         public DateTimeOffset TimeStamp { get; set; }
 	}

@@ -1,9 +1,11 @@
+using System;
+
 namespace Blockchain.Investments.Core.Domain
 {
     public class Transaction
     {
         public JournalType Journal {get; set;}
-        public Account Account {get; set;}
+        public Guid AccountAggregateId {get; set;}
         public string Tag {get;set;}
         public double Value {get; set;}
         public double Quantity {get;set;}

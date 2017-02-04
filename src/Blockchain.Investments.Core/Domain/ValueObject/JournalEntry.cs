@@ -5,7 +5,7 @@ namespace Blockchain.Investments.Core.Domain
 {
     public class JournalEntry
     {
-        public Security Currency {get;set;}
+        public string CurrencyId {get;set;}
         public DateTime EventDate {get;set;}
         public string Description {get;set;}
         public List<Transaction> Splits {get;set;}
