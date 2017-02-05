@@ -19,15 +19,45 @@ namespace Blockchain.Investments.Core.ReadModel.Handlers
         {
             BookDto book = _repo.FindByAggregateId(message.Id);
             book.Journal.Add(message.JournalEntry);
-            foreach (var entry in message.LedgerEntry) 
+            foreach (var ledgerAccount in message.LedgerEntry) 
             {
-                List<LedgerEntry> list = new List<LedgerEntry>();
-                if (book.Ledger.ContainsKey(entry.Key)) 
+                // Ledger
+                List<LedgerEntry> ledgerList = new List<LedgerEntry>();
+                if (book.Ledger.ContainsKey(ledgerAccount.Key)) 
                 {
-                    list = book.Ledger[entry.Key];
+                    ledgerList = book.Ledger[ledgerAccount.Key];
                 }
-                list.Add(entry.Value);
-                book.Ledger[entry.Key] = list;
+                ledgerList.Add(ledgerAccount.Value);
+                book.Ledger[ledgerAccount.Key] = ledgerList;
+
+                // Trial Balance
+                List<TrialBalanceEntry> trialBalanceList = new List<TrialBalanceEntry>();
+                bool isNewEntry = true;
+                if (book.TrialBalance.ContainsKey(ledgerAccount.Key)) {
+                    trialBalanceList = book.TrialBalance[ledgerAccount.Key];
+                    foreach (TrialBalanceEntry trialBalanceEntry in trialBalanceList)
+                    {
+                        if(trialBalanceEntry.CurrencyId == ledgerAccount.Value.CurrencyId) 
+                        {
+                            isNewEntry = false;
+                        }
+                        else 
+                        {
+                            trialBalanceEntry.CurrencyId = ledgerAccount.Value.CurrencyId;
+                        }
+                        if (ledgerAccount.Value.Journal == JournalType.Debit) 
+                        {
+                            trialBalanceEntry.TotalDebit += ledgerAccount.Value.TotalValue;
+                        }
+                        else 
+                        {
+                            trialBalanceEntry.TotalCredit += ledgerAccount.Value.TotalValue;
+                        }
+                        if (isNewEntry)
+                            trialBalanceList.Add(trialBalanceEntry);
+                    }
+                }
+                book.TrialBalance[ledgerAccount.Key] = trialBalanceList;
             }
 
             _repo.Update(book.UniqueId, book);

@@ -11,19 +11,37 @@ namespace Blockchain.Investments.Core.ReadModel.Dtos
         public string UserId;
         public List<JournalEntry> Journal;
         public Dictionary<string, List<LedgerEntry>> Ledger;
+        public Dictionary<string, List<TrialBalanceEntry>> TrialBalance;
         public BookDto() {}
-        public BookDto(Guid id, string userId, JournalEntry journalEntry, Dictionary<string, LedgerEntry> ledgerEntry)
+        public BookDto(Guid id, string userId, JournalEntry journalEntry, Dictionary<string, LedgerEntry> ledgerEntries)
         {
             Journal = new List<JournalEntry>();
             Ledger = new Dictionary<string, List<LedgerEntry>>();
+            TrialBalance = new Dictionary<string, List<TrialBalanceEntry>>();
             AggregateId = id;
             UserId = userId;
             Journal.Add(journalEntry);
-            foreach (var entry in ledgerEntry) 
+            foreach (var ledgerEntry in ledgerEntries) 
             {
-                List<LedgerEntry> list = new List<LedgerEntry>();
-                list.Add(entry.Value);
-                Ledger.Add(entry.Key, list);
+                // Ledger
+                List<LedgerEntry> ledgerList = new List<LedgerEntry>();
+                ledgerList.Add(ledgerEntry.Value);
+                Ledger.Add(ledgerEntry.Key, ledgerList);
+
+                // Trial Balance
+                List<TrialBalanceEntry> trialBalanceList = new List<TrialBalanceEntry>();
+                TrialBalanceEntry trialBalanceEntry = new TrialBalanceEntry();
+                trialBalanceEntry.CurrencyId = ledgerEntry.Value.CurrencyId;
+                if (ledgerEntry.Value.Journal == JournalType.Debit) 
+                {
+                    trialBalanceEntry.TotalDebit = ledgerEntry.Value.TotalValue;
+                }
+                else 
+                {
+                    trialBalanceEntry.TotalCredit = ledgerEntry.Value.TotalValue;
+                }
+                trialBalanceList.Add(trialBalanceEntry);
+                TrialBalance.Add(ledgerEntry.Key, trialBalanceList);
             }
         }
     }
