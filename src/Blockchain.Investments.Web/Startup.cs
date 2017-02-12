@@ -57,7 +57,7 @@ namespace Blockchain.Investments.Api
             services.Configure<AppConfig>(Configuration);
 
             // Set symmetric security key
-            string securityKey = Environment.GetEnvironmentVariable("JWT_SECURITY_KEY");
+            string securityKey = Environment.GetEnvironmentVariable("JWT_SECURITY_KEY") ?? "JWT_SECURITY_KEY";
             _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(securityKey));
             
             // Add application services
