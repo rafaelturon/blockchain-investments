@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare var Ledger: any;
 
@@ -9,11 +10,17 @@ declare var Ledger: any;
 })
 export class LoginComponent {
     public bitid: BitId;
+    public sanitizer: DomSanitizer;
 
-    constructor(http: Http) {
+    constructor(http: Http, sanitizer:DomSanitizer) {
         http.get('/api/identity').subscribe(result => {
             this.bitid = result.json() as BitId;
         });
+        this.sanitizer = sanitizer;
+    }
+
+    getTrustedUri() {
+        return this.sanitizer.bypassSecurityTrustUrl(this.bitid.bitIdUri);
     }
 
     ledgerLogin(event) {

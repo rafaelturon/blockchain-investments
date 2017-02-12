@@ -9,7 +9,7 @@
         <h3>Scan this QRcode with your BitID enabled mobile wallet.</h3>
         <p>You can also click on the QRcode if you have a BitID enabled desktop wallet.
         <div class="spacer20"></div>
-        <a href="{{bitid.bitIdUri}}">
+        <a [href]="getTrustedUri()">
             <img src="{{bitid.bitIdImageQr}}" border="0" align="center" alt="Click on QRcode to activate compatible desktop wallet">
         </a>
         <div class="spacer40"></div>
