@@ -52,7 +52,8 @@ namespace Blockchain.Investments.Api.Controllers
             }
             var createdCurrency = _repo.Create(security);
             _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Created", createdCurrency.UniqueId);
-            return new OkObjectResult(security);
+            
+            return CreatedAtRoute("default", new { id = security.UniqueId}, security);
         }
 
         // PUT api/values/5
@@ -73,7 +74,7 @@ namespace Blockchain.Investments.Api.Controllers
             
             _repo.Update(security.UniqueId, security);
             _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Updated", security.UniqueId);
-            return new OkResult();
+            return Accepted(security);
         }
 
         // DELETE api/values/5
