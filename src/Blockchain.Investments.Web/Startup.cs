@@ -31,6 +31,7 @@ using MongoDB.Driver;
 using MongoDB.Bson.Serialization;
 using AutoMapper;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Blockchain.Investments.Api
 {
@@ -59,7 +60,7 @@ namespace Blockchain.Investments.Api
             // Set symmetric security key
             string securityKey = Environment.GetEnvironmentVariable("JWT_SECURITY_KEY") ?? "JWT_SECURITY_KEY";
             _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(securityKey));
-            
+
             // Add application services
             services.AddSingleton<Microsoft.AspNetCore.Http.IHttpContextAccessor, Microsoft.AspNetCore.Http.HttpContextAccessor>();
             services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(Configuration);
@@ -71,7 +72,7 @@ namespace Blockchain.Investments.Api
 
             #region CQRS
             services.AddMemoryCache();
-            
+
             //Add Cqrs services
             services.AddSingleton<InProcessBus>(new InProcessBus());
             services.AddSingleton<ICommandSender>(y => y.GetService<InProcessBus>());
@@ -81,15 +82,15 @@ namespace Blockchain.Investments.Api
             services.AddSingleton<IEventStore, MongoEventStore>();
             services.AddScoped<ICache, CQRSlite.Cache.MemoryCache>();
             services.AddScoped<IRepository>(y => new CQRSlite.Cache.CacheRepository(new Repository(y.GetService<IEventStore>()), y.GetService<IEventStore>(), y.GetService<ICache>()));
-            
+
             services.AddTransient<IReadModelFacade, ReadModelFacade>();
-            
+
             //Scan for commandhandlers and eventhandlers
             services.Scan(scan => scan
                 .FromAssemblies(typeof(BookCommandHandlers).GetTypeInfo().Assembly)
                     .AddClasses(classes => classes.Where(x => {
                         var allInterfaces = x.GetInterfaces();
-                        return 
+                        return
                             allInterfaces.Any(y => y.GetTypeInfo().IsGenericType && y.GetTypeInfo().GetGenericTypeDefinition() == typeof(ICommandHandler<>)) ||
                             allInterfaces.Any(y => y.GetTypeInfo().IsGenericType && y.GetTypeInfo().GetGenericTypeDefinition() == typeof(IEventHandler<>));
                     }))
@@ -101,7 +102,7 @@ namespace Blockchain.Investments.Api
             var serviceProvider = services.BuildServiceProvider();
             var registrar = new BusRegistrar(new DependencyResolver(serviceProvider));
             registrar.Register(typeof(BookCommandHandlers));
-            
+
             //Register Mongo
             MongoDefaults.GuidRepresentation = MongoDB.Bson.GuidRepresentation.Standard;
             BsonClassMap.RegisterClassMap<AccountCreated>(cm =>
@@ -133,7 +134,7 @@ namespace Blockchain.Investments.Api
 
             // AutoMapper
             services.AddAutoMapper();
-            
+
             // Add framework services.
             services.AddMvc(
                 config =>
@@ -154,7 +155,12 @@ namespace Blockchain.Investments.Api
                 options.AddPolicy(Constants.AuthorizationPolicy,
                                 policy => policy.RequireClaim(Constants.ClaimType, Constants.ClaimValue));
             });
-            
+            services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            });
+
             // Get options from app settings
             var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
 
@@ -206,12 +212,12 @@ namespace Blockchain.Investments.Api
                 ClockSkew = TimeSpan.Zero
             };
 
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                TokenValidationParameters = tokenValidationParameters
-            });
+            // app.UseJwtBearerAuthentication(new JwtBearerOptions
+            // {
+            //     AutomaticAuthenticate = true,
+            //     AutomaticChallenge = true,
+            //     TokenValidationParameters = tokenValidationParameters
+            // });
 
             app.UseMvc(routes =>
             {

@@ -3,7 +3,7 @@ FROM microsoft/dotnet:latest
 ENV ASPNETCORE_ENVIRONMENT="Production"
 
 RUN apt-get update
-RUN wget -qO- https://deb.nodesource.com/setup_4.x | bash -
+RUN wget -qO- https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get install -y build-essential nodejs
 
 COPY . /app

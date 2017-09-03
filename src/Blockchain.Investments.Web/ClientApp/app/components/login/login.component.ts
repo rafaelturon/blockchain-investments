@@ -23,16 +23,16 @@ export class LoginComponent {
         return this.sanitizer.bypassSecurityTrustUrl(this.bitid.bitIdUri);
     }
 
-    ledgerLogin(event) {
+    ledgerLogin(event: any) {
         Ledger.init({ callback: this.callback });
         Ledger.bitid(this.bitid.bitIdUri);
     }
 
-    manualLogin(event) {
-        
+    manualLogin(event: any) {
+
     }
 
-    callback(event) {
+    callback(event: any) {
         if (event.response.command == "bitid") {
             console.log(event.response);
         }
