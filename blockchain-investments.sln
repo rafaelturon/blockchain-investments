@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{29A475CE-689
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blockchain.Investments.Core", "src\Blockchain.Investments.Core\Blockchain.Investments.Core.csproj", "{3A4D5623-773D-456B-BC39-9504DABF196B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blockchain.Investments.Web", "src\Blockchain.Investments.Web\Blockchain.Investments.Web.csproj", "{33905375-2D5A-4821-B3FE-CF5011845678}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blockchain.Investments.Api", "src\Blockchain.Investments.Api\Blockchain.Investments.Api.csproj", "{33905375-2D5A-4821-B3FE-CF5011845678}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blockchain.Investments.Bitcoin", "src\Blockchain.Investments.Bitcoin\Blockchain.Investments.Bitcoin.csproj", "{E8F9C95A-555A-479D-B5F8-A747F00F6BAE}"
 EndProject

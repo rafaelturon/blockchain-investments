@@ -45,7 +45,7 @@ namespace Blockchain.Investments.Api.Controllers
         public IActionResult Get(Guid id)
         {
             _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", id.ToString());
-            
+
             var transaction = _readmodel.GetTransactionItems().FirstOrDefault(p => p.AggregateId == id);
             if (transaction == null)
             {
@@ -64,22 +64,22 @@ namespace Blockchain.Investments.Api.Controllers
             {
                 return BadRequest();
             }
-            
+
             string userId = _httpContextAccessor.HttpContext.User.Claims
                             .Where(c => c.Type == Constants.ClaimType)
                             .Select(c => c.Value).SingleOrDefault();
             BookDto book = _readmodel.Find("UserId", userId);
-            if (book == null) 
+            if (book == null)
             {
                 Guid journalEntryId = Guid.NewGuid();
                 _commandSender.Send(new CreateJournal(journalEntryId, userId, journalEntry));
                 _logger.LogInformation(LoggingEvents.INSERT_ITEM, "Item {0} Added. New Book", journalEntryId);
             }
-            else 
+            else
             {
                 _commandSender.Send(new AddJournalEntry(book.AggregateId, userId, journalEntry));
                 _logger.LogInformation(LoggingEvents.UPDATE_ITEM, "Item {0} Added", book.AggregateId);
-            }         
+            }
 
             return new OkResult();
         }
