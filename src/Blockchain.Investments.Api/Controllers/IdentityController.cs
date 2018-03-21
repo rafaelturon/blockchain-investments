@@ -1,134 +1,77 @@
 using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Principal;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Blockchain.Investments.Api.Options;
-using Blockchain.Investments.Bitcoin.Domain;
-using Blockchain.Investments.Core.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
 namespace Blockchain.Investments.Api.Controllers
 {
     [Route("api/[controller]")]
     public class IdentityController : Controller
     {
-        private readonly JwtIssuerOptions _jwtOptions;
         private readonly ILogger<IdentityController> _logger;
-        private readonly JsonSerializerSettings _serializerSettings;
-        public IdentityController(IOptions<JwtIssuerOptions> jwtOptions, ILogger<IdentityController> logger) 
+        public IdentityController(ILogger<IdentityController> logger)
         {
-            _jwtOptions = jwtOptions.Value;
-            ThrowIfInvalidOptions(_jwtOptions);
             _logger = logger;
-            _serializerSettings = new JsonSerializerSettings
-            {
-                Formatting = Formatting.Indented
-            };
         }
         [HttpGet]
+        [Route("callback")]
         [AllowAnonymous]
-        public IActionResult Get()
+        public IActionResult CallBack(string state, string code, string authuser, string session_state, string prompt)
         {
-            Guid guid = Guid.NewGuid();
-            string guidString = guid.ToString().Replace ("-", "");
 
-            long ticks = DateTime.UtcNow.Ticks;
-            string nonce = guidString + ticks.ToString ("x");
+            // build the request to validate the incoming code
+            var clientID = "943502630298-rf4m7sn7dalce1iu7i0dsm2pdjpe7jou.apps.googleusercontent.com";                                   // from the Google API console, SHOULD BE IN A SAFE PLACE, NOT HERE!
+            var clientSecret = "L40QOuL9znAebGHe6PvU1tqv";                           // from the Google API console, SHOULD BE IN A SAFE PLACE, NOT HERE!
+            var redirectUri = "http://localhost:5000/api/identity/callback";   // the original url we sent must match what we original set as the callback
+            var grantType = "authorization_code";
 
-            var httpContext = HttpContext;
-            //string url = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.Path}{httpContext.Request.QueryString}";
-            string hostName = httpContext.Request.Host.Host;
-            string bitIdUri = "bitid://" + hostName + "/api/identity?x=" + nonce + "&u=1";
+            // the url to send the POST request (from the google docs)
+            var postUrl = "https://www.googleapis.com/oauth2/v4/token";
 
-            BitIdRequest bitIdRequest = new BitIdRequest();
-            bitIdRequest.BitIdUri = bitIdUri;
-            bitIdRequest.BitIdImageQr = "https://chart.googleapis.com/chart?cht=qr&chs=400x400&chl=" + bitIdUri;
-            
-            // list.Add(nonce.Substring(0, 32)); // guid
-            _logger.LogInformation(LoggingEvents.GET_ITEM, "Getting item {0}", bitIdUri);
-            return new ObjectResult(bitIdRequest);
+            // wrap parameters in a Form object
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("code", code),   // the code we got from the callback
+                new KeyValuePair<string, string>("client_id", clientID),
+                new KeyValuePair<string, string>("client_secret", clientSecret),
+                new KeyValuePair<string, string>("redirect_uri", redirectUri),
+                new KeyValuePair<string, string>("grant_type", grantType),
+            });
+
+            var resultContent = ProcessTokenRequest(postUrl, content);
+/*
+            // submit the request
+
+            var client = new HttpClient();
+            var result = client.PostAsync(postUrl, content);
+            result.Wait();
+
+            // get the result as a string
+            var resultContent = result.Result.Content.ReadAsStringAsync();
+            resultContent.Wait();
+
+            // parse the result into an object
+            var resultObject = new { access_token = "" };
+            var json = JsonConvert.DeserializeAnonymousType(resultContent.Result, resultObject);
+
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + json.access_token);
+*/
+            return new ObjectResult(code);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> Post([FromForm]BitIdCredentials request) 
+        public static string ProcessTokenRequest(string postUrl, FormUrlEncodedContent content)
         {
-            string jsonResponseToken = string.Empty;
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, postUrl);
 
-            BitIdResponse response = request.VerifyMessage();
-            jsonResponseToken = JsonConvert.SerializeObject(response, _serializerSettings);
-            if (response.Success) 
-            {
-                // use attribute >> [Authorize(Policy = Constants.AuthorizationPolicy)]
-                var identity = GetClaimsIdentity(request.Address);
-                
-                var claims = new[]
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, request.Address),
-                    new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
-                    new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                    identity.FindFirst(Constants.ClaimType)
-                };
-                // Create the JWT security token and encode it.
-                var jwt = new JwtSecurityToken(
-                    issuer: _jwtOptions.Issuer,
-                    audience: _jwtOptions.Audience,
-                    claims: claims,
-                    notBefore: _jwtOptions.NotBefore,
-                    expires: _jwtOptions.Expiration,
-                    signingCredentials: _jwtOptions.SigningCredentials);
-                var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            request.Content = content;
+            var response = client.SendAsync(request).GetAwaiter().GetResult();
 
-                // Serialize and return the response
-                var responseToken = new
-                {
-                    access_token = encodedJwt,
-                    expires_in = (int)_jwtOptions.ValidFor.TotalSeconds
-                };
-
-                jsonResponseToken = JsonConvert.SerializeObject(responseToken, _serializerSettings);
-                
-            }
-
-            return new ObjectResult(jsonResponseToken);
-        }
-
-        private static void ThrowIfInvalidOptions(JwtIssuerOptions options)
-        {
-            if (options == null) throw new ArgumentNullException(nameof(options));
-
-            if (options.ValidFor <= TimeSpan.Zero)
-            {
-                throw new ArgumentException("Must be a non-zero TimeSpan.", nameof(JwtIssuerOptions.ValidFor));
-            }
-
-            if (options.SigningCredentials == null)
-            {
-                throw new ArgumentNullException(nameof(JwtIssuerOptions.SigningCredentials));
-            }
-
-            if (options.JtiGenerator == null)
-            {
-                throw new ArgumentNullException(nameof(JwtIssuerOptions.JtiGenerator));
-            }
-        }
-
-        /// <returns>Date converted to seconds since Unix epoch (Jan 1, 1970, midnight UTC).</returns>
-        private static long ToUnixEpochDate(DateTime date)
-        => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
-        
-        private static ClaimsIdentity GetClaimsIdentity(string bitcoinPublicAddress)
-        {
-            return new ClaimsIdentity(new GenericIdentity(bitcoinPublicAddress, "Token"),
-                new[]
-                {
-                    new Claim(Constants.ClaimType, bitcoinPublicAddress)
-                });
+            var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            return result;
         }
     }
 }

@@ -32,6 +32,9 @@ using MongoDB.Bson.Serialization;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Collections.Generic;
 
 namespace Blockchain.Investments.Api
 {
@@ -135,10 +138,61 @@ namespace Blockchain.Investments.Api
             // AutoMapper
             services.AddAutoMapper();
 
+            // Authentication
+            services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+            .AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = "943502630298-rf4m7sn7dalce1iu7i0dsm2pdjpe7jou.apps.googleusercontent.com";
+                googleOptions.ClientSecret = "L40QOuL9znAebGHe6PvU1tqv";
+                googleOptions.CallbackPath = "/api/identity/callback";
+            });
+            /*
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              .AddJwtBearer(options =>
+              {
+                  options.TokenValidationParameters = new TokenValidationParameters
+                  {
+                      ValidateLifetime = true,
+                      ValidateIssuer = true,
+                      ValidIssuer = "accounts.google.com",
+                      ValidateAudience = false
+                  };
+              });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie(o => o.LoginPath = new Microsoft.AspNetCore.Http.PathString("/signin-google"))
+            .AddGoogle(options =>
+            {
+                options.ClientId = "943502630298-rf4m7sn7dalce1iu7i0dsm2pdjpe7jou.apps.googleusercontent.com";
+                options.ClientSecret = "L40QOuL9znAebGHe6PvU1tqv";
+            });
+
+            services.AddAuthentication(
+            v => {
+                v.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //v.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                //v.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+            .AddCookie(o => o.LoginPath = new Microsoft.AspNetCore.Http.PathString("/signin-google"))
+            .AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = "943502630298-rf4m7sn7dalce1iu7i0dsm2pdjpe7jou.apps.googleusercontent.com";
+                googleOptions.ClientSecret = "L40QOuL9znAebGHe6PvU1tqv";
+            });
+            */
+
             // Add framework services.
             services.AddMvc(
                 config =>
                 {
+                  /*
                     // Make authentication compulsory
                     var policy = new AuthorizationPolicyBuilder()
                          .RequireAuthenticatedUser()
@@ -146,9 +200,13 @@ namespace Blockchain.Investments.Api
                     config.Filters.Add(new AuthorizeFilter(policy));
                     // Bad request filter
                     config.Filters.Add(new BadRequestActionFilter());
+                    */
                 }
             ).AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>()); // FluentValidation
 
+
+
+          /*
             // Set up authorization policies.
             services.AddAuthorization(options =>
             {
@@ -170,6 +228,7 @@ namespace Blockchain.Investments.Api
                 options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
                 options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
             });
+            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -191,17 +250,15 @@ namespace Blockchain.Investments.Api
 
             app.UseStaticFiles();
 
-            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+            /*
+            //var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
-                ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+                ValidIssuer = "accounts.google.com",
 
                 ValidateAudience = false,
                 //ValidAudience = currentUrl,
-
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = _signingKey,
 
                 RequireExpirationTime = true,
                 ValidateLifetime = true,
@@ -209,12 +266,9 @@ namespace Blockchain.Investments.Api
                 ClockSkew = TimeSpan.Zero
             };
 
-            // app.UseJwtBearerAuthentication(new JwtBearerOptions
-            // {
-            //     AutomaticAuthenticate = true,
-            //     AutomaticChallenge = true,
-            //     TokenValidationParameters = tokenValidationParameters
-            // });
+
+            app.UseAuthentication();
+            */
 
             app.UseMvc(routes =>
             {
